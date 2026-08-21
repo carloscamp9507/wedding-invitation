@@ -475,7 +475,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
 
     {/* Contenedor del Libro con efecto de pasar páginas */}
     <div className="my-4 flex justify-center">
-      {/* @ts-expect-error */}
+      {/* @ts-expect-error HTMLFlipBook lacks TS types */}
       <HTMLFlipBook 
         width={320} 
         height={450} 
