@@ -101,7 +101,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
         style={{
           backgroundImage: `url(/foto_1_samping.webp)`, //refer to base 1st photo
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundPosition: "center", 
         }}
       >
         <div className="absolute bottom-0 left-0 w-full h-1/5 pointer-events-none">
