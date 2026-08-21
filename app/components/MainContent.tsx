@@ -510,7 +510,6 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
     {/* Detalle o firma */}
     <div className="w-72 transform skew-x-6 drop-shadow text-center mt-2">
       <p className="text-3xl font-thesignature text-white/80">
-        Desliza para ver todo el folleto. 
         {config.prewedding.detail}
       </p>
     </div>
@@ -553,9 +552,9 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
       {/* Banco 2 (Opcional) */}
       <div>
         <p className="font-ovo text-lg font-semibold text-amber-200">Banco Guayaquil</p>
-        <p className="text-sm font-legan text-white/80 mt-1">Cuenta Corriente: <span className="font-mono font-bold text-white">0987654321</span></p>
-        <p className="text-sm font-legan text-white/80">Titular: Carlos y Esposa</p>
-        <p className="text-xs font-legan text-white/60 mt-1">Correo: correo@ejemplo.com</p>
+        <p className="text-sm font-legan text-white/80 mt-1">Cuenta de Ahorros: <span className="font-mono font-bold text-white">0987654321</span></p>
+        <p className="text-sm font-legan text-white/80">Titular: Erick Isaac Calle Herrera</p>
+        <p className="text-xs font-legan text-white/60 mt-1">CI: 1751578731</p>
       </div>
 
     </div>
