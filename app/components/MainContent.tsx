@@ -6,6 +6,7 @@ import { FaInstagram } from "react-icons/fa";
 import Link from "next/link";
 import { useInView } from "react-intersection-observer";
 import CountdownTimer from "./Countdown";
+import WeddingTimelineVertical from "./WeddingTimelineVertical";
 import { config } from "@/lib/config";
 import HTMLFlipBook from 'react-pageflip';
 
@@ -74,6 +75,9 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
     threshold: 0.5,
   });
   const { ref: slide10Ref, inView: isSlide10InView } = useInView({
+    threshold: 0.5,
+  });
+  const { ref: slide11Ref, inView: isSlide11InView } = useInView({
     threshold: 0.5,
   });
   const { ref: endRef, inView: isEndInView } = useInView({
@@ -345,7 +349,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                   save our date
                 </h3>
                 <h1 className="text-2xl w-[200px] text-center text-white  font-ovo uppercase">
-                  {new Date(config.eventDate).toLocaleDateString("en-US", {
+                  {new Date(config.eventDate).toLocaleDateString("es-US", {
                     weekday: "long",
                   })} <br />  {new Date(config.eventDate).toLocaleDateString("es-US", {
                     year: "numeric",
@@ -392,9 +396,9 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
             </div>
             {/* Slide 6 */}
             <div
-              className="snap-start  text-white h-screen flex flex-col items-center justify-end pb-16 px-12 "
+              className="snap-start  text-white h-screen flex flex-col items-center justify-start pt-16 px-12 "
               style={{
-                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_6.webp)`,
+                backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_6.jpeg)`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -629,6 +633,8 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
             )}
 
             
+            {/* Timing Section */}
+            <WeddingTimelineVertical />
 
             {/* SLIDE AKHIR */}
             <div
