@@ -6,8 +6,6 @@ import { FaInstagram } from "react-icons/fa";
 import Link from "next/link";
 import { useInView } from "react-intersection-observer";
 import CountdownTimer from "./Countdown";
-import Form from "./Form";
-import WishesList from "./WishesList";
 import { config } from "@/lib/config";
 import HTMLFlipBook from 'react-pageflip';
 
@@ -232,7 +230,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
             <div
               className="snap-start  text-white h-screen flex items-end pb-16 px-12 "
               style={{
-                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_3.jpg)`,
+                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_3.jpeg)`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -477,7 +475,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
 
     {/* Contenedor del Libro con efecto de pasar páginas */}
     <div className="my-4 flex justify-center">
-      {/* @ts-ignore */}
+      {/* @ts-expect-error */}
       <HTMLFlipBook 
         width={320} 
         height={450} 
