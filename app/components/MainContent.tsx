@@ -199,7 +199,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
             <div
               className={`text-white h-screen flex items-end pb-16 px-12 snap-start `}
               style={{
-                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_2.jpg)`,
+                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 80%, transparent 100%), url(/slide_2.jpeg)`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -230,7 +230,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
             <div
               className="snap-start  text-white h-screen flex items-end pb-16 px-12 "
               style={{
-                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_3.jpeg)`,
+                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 80%, transparent 100%), url(/slide_3.jpeg)`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -564,9 +564,9 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
             {/* SLIDE 10 */}
             {config.rsvp.enabled && (
             <div
-              className="snap-start text-white h-screen flex flex-col justify-start pt-16 pb-16 px-8"
+              className="snap-start text-white h-screen flex flex-col justify-end pt-16 pb-16 px-8"
               style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_9.webp)`,
+                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_9.jpeg)`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
