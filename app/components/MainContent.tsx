@@ -510,6 +510,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
     {/* Detalle o firma */}
     <div className="w-72 transform skew-x-6 drop-shadow text-center mt-2">
       <p className="text-3xl font-thesignature text-white/80">
+        Desliza para ver todo el folleto. 
         {config.prewedding.detail}
       </p>
     </div>
