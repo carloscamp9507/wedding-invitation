@@ -634,8 +634,12 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
 
             
             {/* Timing Section */}
+            <div
+                ref={slide11Ref}
+                className={` ${isSlide11InView ? "active" : ""} fadeInMove `}
+              >
             <WeddingTimelineVertical />
-
+          </div>
             {/* SLIDE AKHIR */}
             <div
               className="snap-start text-white h-screen flex flex-col justify-end pt-16 pb-16 px-12 "
