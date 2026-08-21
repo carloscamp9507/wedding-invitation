@@ -405,7 +405,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                   }  fadeInMove flex items-center flex-col`}
               >
                 <h1 className="text-2xl text-center text-white  font-ovo">
-                  ALMOST TIME FOR OURCELEBRATION
+                  SE ACERCA EL GRAN DÍA, ¡NO TE LO PIERDAS!
                 </h1>
                 {/* Countdown Timer */}
                 <CountdownTimer />
@@ -470,7 +470,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
     className={`${isSlide8InView ? "active" : ""} fadeInMove w-full flex flex-col items-center`}
   >
     <h1 className="text-3xl text-white font-ovo text-center uppercase mb-6">
-      Nuestra Pre Historia antes de la boda
+      Nuestra Historia antes de la boda
     </h1>
 
     {/* Contenedor del Libro con efecto de pasar páginas */}
