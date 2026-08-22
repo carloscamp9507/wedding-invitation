@@ -105,7 +105,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
         style={{
           backgroundImage: `url(/foto_1_samping.webp)`, //refer to base 1st photo
           backgroundSize: "cover",
-          backgroundPosition: "center", 
+          backgroundPosition: "center",
         }}
       >
         <div className="absolute bottom-0 left-0 w-full h-1/5 pointer-events-none">
@@ -178,27 +178,27 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
         {isOpen && (
           <>
             {/* Slide 1 */}
-           <div
-  className="text-white h-screen flex items-end md:items-center pt-12 p-5 px-12 snap-start relative overflow-hidden"
-  style={{
-    backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_1.jpeg)`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  }}
->
-  <div
-    ref={slide1Ref}
-    className={`relative z-10 ${isSlide1InView ? "active" : ""} fadeInMove pb-10 md:pb-0 w-full md:max-w-3xl`}
-  >
-    <h1 className="text-xl md:text-2xl font-ovo tracking-wide text-white uppercase">
-      {config.bibleVerse}
-    </h1>
-    <p className="text-sm mt-5 font-legan">
-      {config.bibleVerseContent}
-    </p>
-    <p className="text-6xl mt-5 font-wonder">{config.coupleNames}</p>
-  </div>
-</div>
+            <div
+              className="text-white h-screen flex items-end md:items-center pt-12 p-5 px-12 snap-start relative overflow-hidden"
+              style={{
+                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_1.jpeg)`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            >
+              <div
+                ref={slide1Ref}
+                className={`relative z-10 ${isSlide1InView ? "active" : ""} fadeInMove pb-10 md:pb-0 w-full md:max-w-3xl`}
+              >
+                <h1 className="text-xl md:text-2xl font-ovo tracking-wide text-white uppercase">
+                  {config.bibleVerse}
+                </h1>
+                <p className="text-sm mt-5 font-legan">
+                  {config.bibleVerseContent}
+                </p>
+                <p className="text-6xl mt-5 font-wonder">{config.coupleNames}</p>
+              </div>
+            </div>
             {/* Slide 2 */}
             <div
               className={`text-white h-screen flex items-end pb-16 px-12 snap-start `}
@@ -461,185 +461,189 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
               </div>)}
             {/* SLIDE 8 */}
             {config.prewedding.enabled && (
-<div>          
-<div className="snap-start text-white h-screen flex flex-col justify-center items-center pt-16 pb-16 px-8 relative"
-  style={{
-    backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_8.jpg)`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  }}
->
-  <div 
-    ref={slide8Ref} 
-    className={`${isSlide8InView ? "active" : ""} fadeInMove w-full flex flex-col items-center`}
-  >
-    <h1 className="text-3xl text-white font-ovo text-center uppercase mb-6">
-      Nuestra Historia antes de la boda
-    </h1>
+              <div>
+                <div className="snap-start text-white h-screen flex flex-col justify-center items-center pt-16 pb-16 px-8 relative"
+                  style={{
+                    backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_8.jpg)`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                >
+                  <div
+                    ref={slide8Ref}
+                    className={`${isSlide8InView ? "active" : ""} fadeInMove w-full flex flex-col items-center`}
+                  >
+                    <h1 className="text-3xl text-white font-ovo text-center uppercase mb-6">
+                      Nuestra Historia antes de la boda
+                    </h1>
 
-    {/* Contenedor del Libro con efecto de pasar páginas */}
-    <div className="my-4 flex justify-center">
-      {/* @ts-expect-error HTMLFlipBook lacks TS types */}
-      <HTMLFlipBook 
-        width={320} 
-        height={450} 
-        size="stretch"
-        minWidth={280}
-        maxWidth={400}
-        minHeight={400}
-        maxHeight={600}
-        maxShadowOpacity={0.5}
-        showCover={true}
-        mobileScrollSupport={true}
-        className="shadow-2xl mx-auto"
-      >
-        <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
-          <img src="/book/Book_page-0001.jpg" alt="Página 1" className="w-full h-full object-contain select-none pointer-events-none" />
-        </div>
-        <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
-          <img src="/book/Book_page-0002.jpg" alt="Página 2" className="w-full h-full object-contain select-none pointer-events-none" />
-        </div>
-        <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
-          <img src="/book/Book_page-0003.jpg" alt="Página 3" className="w-full h-full object-contain select-none pointer-events-none" />
-        </div>
-        <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
-          <img src="/book/Book_page-0004.jpg" alt="Página 4" className="w-full h-full object-contain select-none pointer-events-none" />
-        </div>
-        <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
-          <img src="/book/Book_page-0005.jpg" alt="Página 5" className="w-full h-full object-contain select-none pointer-events-none" />
-        </div>
-      </HTMLFlipBook>
-    </div>
+                    {/* Contenedor del Libro con efecto de pasar páginas */}
+                    <div className="my-4 flex justify-center">
+                      {/* @ts-expect-error HTMLFlipBook lacks TS types */}
+                      <HTMLFlipBook
+                        width={320}
+                        height={450}
+                        size="stretch"
+                        minWidth={280}
+                        maxWidth={400}
+                        minHeight={400}
+                        maxHeight={600}
+                        maxShadowOpacity={0.5}
+                        showCover={true}
+                        mobileScrollSupport={true}
+                        className="shadow-2xl mx-auto"
+                      >
+                        <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
+                          <img src="/book/Book_page-0001.jpg" alt="Página 1" className="w-full h-full object-contain select-none pointer-events-none" />
+                        </div>
+                        <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
+                          <img src="/book/Book_page-0002.jpg" alt="Página 2" className="w-full h-full object-contain select-none pointer-events-none" />
+                        </div>
+                        <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
+                          <img src="/book/Book_page-0003.jpg" alt="Página 3" className="w-full h-full object-contain select-none pointer-events-none" />
+                        </div>
+                        <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
+                          <img src="/book/Book_page-0004.jpg" alt="Página 4" className="w-full h-full object-contain select-none pointer-events-none" />
+                        </div>
+                        <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
+                          <img src="/book/Book_page-0005.jpg" alt="Página 5" className="w-full h-full object-contain select-none pointer-events-none" />
+                        </div>
+                      </HTMLFlipBook>
+                    </div>
 
-    {/* Detalle o firma */}
-    <div className="w-72 transform skew-x-6 drop-shadow text-center mt-2">
-      <p className="text-3xl font-thesignature text-white/80">
-        {config.prewedding.detail}
-      </p>
-    </div>
-  </div>
-</div></div>
-              )}
+                    {/* Detalle o firma */}
+                    <div className="w-72 transform skew-x-6 drop-shadow text-center mt-2">
+                      <p className="text-3xl font-thesignature text-white/80">
+                        {config.prewedding.detail}
+                      </p>
+                    </div>
+                  </div>
+                </div></div>
+            )}
 
-{/* SLIDE 9 */}
+            {/* SLIDE 9 */}
             <div
-  className="snap-start text-white h-screen flex flex-col justify-center items-center pt-16 pb-16 px-8 relative"
-  style={{
-    backgroundImage: `url(/slide_10.jpg)`, // Cambia por la imagen de fondo que prefieras
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  }}
->
-  <div
-    ref={slide10Ref}
-    className={`${isSlide10InView ? "active" : ""} fadeInMove w-full max-w-xl text-center`}
-  >
-    <h1 className="text-3xl font-ovo uppercase tracking-wide mb-4">
-      Lluvia de Sobres
-    </h1>
-    
-    <p className="text-sm font-legan text-white/90 mb-8 px-4 leading-relaxed">
-      Su presencia es nuestro mejor regalo. Sin embargo, si desean tener un detalle con nosotros para nuestra nueva vida juntos, pueden hacerlo mediante transferencia bancaria.
-    </p>
-
-    {/* Tarjetas de cuentas bancarias */}
-    <div className="space-y-4 bg-black/40 backdrop-blur-md p-6 rounded-2xl border border-white/10 shadow-xl">
-      
-      {/* Banco 1 */}
-      <div className="border-b border-white/20 pb-4">
-        <p className="font-ovo text-lg font-semibold text-amber-200">Banco Pichincha</p>
-        <p className="text-sm font-legan text-white/80 mt-1">Cuenta de Ahorros: <span className="font-mono font-bold text-white">2211492583</span></p>
-        <p className="text-sm font-legan text-white/80">Titular: Erick Isaac Calle Herrera</p>
-        <p className="text-xs font-legan text-white/60 mt-1">CI: 1751578731</p>
-      </div>
-
-      {/* Banco 2 (Opcional) */}
-      <div>
-        <p className="font-ovo text-lg font-semibold text-amber-200">Banco Guayaquil</p>
-        <p className="text-sm font-legan text-white/80 mt-1">Cuenta de Ahorros: <span className="font-mono font-bold text-white">0987654321</span></p>
-        <p className="text-sm font-legan text-white/80">Titular: Erick Isaac Calle Herrera</p>
-        <p className="text-xs font-legan text-white/60 mt-1">CI: 1751578731</p>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-            {/* SLIDE 10 */}
-            {config.rsvp.enabled && (
-            <div
-              className="snap-start text-white h-screen flex flex-col justify-end pt-16 pb-16 px-8"
+              className="snap-start text-white h-screen flex flex-col justify-center items-center pt-16 pb-16 px-8 relative"
               style={{
-                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_9.jpeg)`,
+                backgroundImage: `url(/slide_10.jpg)`, // Cambia por la imagen de fondo que prefieras
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
             >
               <div
-                ref={slide9Ref}
-                className={`${isSlide9InView ? "active" : ""} fadeInMove`}
+                ref={slide10Ref}
+                className={`${isSlide10InView ? "active" : ""} fadeInMove w-full max-w-xl text-center`}
               >
-                <h1 className="text-3xl text-white font-ovo text-center uppercase">
-                  Confirmación de asistencia
+                <h1 className="text-3xl font-ovo uppercase tracking-wide mb-4">
+                  Lluvia de Sobres
                 </h1>
-                <p className="text-sm font-legan text-white/80 text-center">
-                {config.rsvp.detail}
-                </p>
-                  <div className="mt-6 flex flex-col items-center gap-3">
-                      <a
-                        href={
-                          config.rsvp.whatsappGroomNumber
-                            ? `https://wa.me/${config.rsvp.whatsappGroomNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
-                                `Hola, que alegría! Confirmo mi asistencia a la boda. Los bendigo: ${config.coupleNames}`
-                              )}`
-                            : `https://wa.me/?text=${encodeURIComponent(
-                                `Hola, que alegría! Confirmo mi asistencia a la boda. Los bendigo: ${config.coupleNames}`
-                              )}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-green-500 hover:bg-green-600 text-white rounded-full px-5 py-3 inline-flex items-center gap-2"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-5 h-5" fill="currentColor" aria-hidden>
-                          <path d="M19.11 17.02c-.37-.18-2.17-1.07-2.5-1.19-.33-.12-.57-.18-.81.18-.24.37-.97 1.19-1.19 1.43-.22.24-.44.26-.81.09-.37-.18-1.56-.57-2.97-1.83-1.1-.98-1.84-2.19-2.06-2.56-.22-.37-.02-.57.16-.75.16-.16.37-.42.56-.63.19-.22.25-.37.37-.62.12-.24.06-.45-.03-.63-.09-.18-.81-1.95-1.11-2.67-.29-.69-.59-.6-.81-.61-.22-.01-.47-.01-.72-.01-.24 0-.63.09-.96.45-.33.37-1.26 1.24-1.26 3.03 0 1.78 1.29 3.5 1.47 3.75.18.24 2.54 3.86 6.16 5.41 3.62 1.56 3.62.95 4.27.89.65-.06 2.17-.88 2.48-1.73.31-.85.31-1.57.22-1.73-.09-.16-.33-.26-.7-.45z"/>
-                          <path d="M16 4C9.37 4 4 9.37 4 16c0 1.99.52 3.85 1.42 5.47L4 28l6.82-1.36A11.94 11.94 0 0016 28c6.63 0 12-5.37 12-12S22.63 4 16 4zM16 26c-1.7 0-3.31-.36-4.76-1.02l-.34-.16L7 26l1.2-3.06-.14-.35A9.99 9.99 0 016 16c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10z"/>
-                        </svg>
-                        Confirmar a {config.groomNickName}
-                      </a>
 
-                      <a
-                        href={
-                          config.rsvp.whatsappBrideNumber
-                            ? `https://wa.me/${config.rsvp.whatsappBrideNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
-                                `Hola, que alegría! Confirmo mi asistencia a la boda. Los bendigo: ${config.coupleNames}`
-                              )}`
-                            : `https://wa.me/?text=${encodeURIComponent(
-                                `Hola, que alegría! Confirmo mi asistencia a la boda. Los bendigo: ${config.coupleNames}`
-                              )}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-pink-800 hover:bg-pink-900 text-white rounded-full px-5 py-3 inline-flex items-center gap-2"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-5 h-5" fill="currentColor" aria-hidden>
-                          <path d="M19.11 17.02c-.37-.18-2.17-1.07-2.5-1.19-.33-.12-.57-.18-.81.18-.24.37-.97 1.19-1.19 1.43-.22.24-.44.26-.81.09-.37-.18-1.56-.57-2.97-1.83-1.1-.98-1.84-2.19-2.06-2.56-.22-.37-.02-.57.16-.75.16-.16.37-.42.56-.63.19-.22.25-.37.37-.62.12-.24.06-.45-.03-.63-.09-.18-.81-1.95-1.11-2.67-.29-.69-.59-.6-.81-.61-.22-.01-.47-.01-.72-.01-.24 0-.63.09-.96.45-.33.37-1.26 1.24-1.26 3.03 0 1.78 1.29 3.5 1.47 3.75.18.24 2.54 3.86 6.16 5.41 3.62 1.56 3.62.95 4.27.89.65-.06 2.17-.88 2.48-1.73.31-.85.31-1.57.22-1.73-.09-.16-.33-.26-.7-.45z"/>
-                          <path d="M16 4C9.37 4 4 9.37 4 16c0 1.99.52 3.85 1.42 5.47L4 28l6.82-1.36A11.94 11.94 0 0016 28c6.63 0 12-5.37 12-12S22.63 4 16 4zM16 26c-1.7 0-3.31-.36-4.76-1.02l-.34-.16L7 26l1.2-3.06-.14-.35A9.99 9.99 0 016 16c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10z"/>
-                        </svg>
-                        Confirmar a {config.brideNickName}
-                      </a>
+                <p className="text-sm font-legan text-white/90 mb-8 px-4 leading-relaxed">
+                  Su presencia es nuestro mejor regalo. Sin embargo, si desean tener un detalle con nosotros para nuestra nueva vida juntos, pueden hacerlo mediante transferencia bancaria.
+                </p>
+
+                {/* Tarjetas de cuentas bancarias */}
+                <div className="space-y-4 bg-black/40 backdrop-blur-md p-6 rounded-2xl border border-white/10 shadow-xl">
+
+                  {/* Banco 1 */}
+                  <div className="border-b border-white/20 pb-4">
+                    <p className="font-ovo text-lg font-semibold text-amber-200">Banco Pichincha</p>
+                    <p className="text-sm font-legan text-white/80 mt-1">Cuenta de Ahorros: <span className="font-mono font-bold text-white">2211492583</span></p>
+                    <p className="text-sm font-legan text-white/80">Titular: Erick Isaac Calle Herrera</p>
+                    <p className="text-xs font-legan text-white/60 mt-1">CI: 1751578731</p>
                   </div>
+
+                  {/* Banco 2 (Opcional) */}
+                  <div>
+                    <p className="font-ovo text-lg font-semibold text-amber-200">Banco Guayaquil</p>
+                    <p className="text-sm font-legan text-white/80 mt-1">Cuenta de Ahorros: <span className="font-mono font-bold text-white">0987654321</span></p>
+                    <p className="text-sm font-legan text-white/80">Titular: Erick Isaac Calle Herrera</p>
+                    <p className="text-xs font-legan text-white/60 mt-1">CI: 1751578731</p>
+                  </div>
+
+                </div>
               </div>
             </div>
+
+            {/* SLIDE 10 */}
+            {config.rsvp.enabled && (
+              <div
+                className="snap-start text-white h-screen flex flex-col justify-end pt-16 pb-16 px-8"
+                style={{
+                  backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_9.jpeg)`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              >
+                <div
+                  ref={slide9Ref}
+                  className={`${isSlide9InView ? "active" : ""} fadeInMove`}
+                >
+                  <h1 className="text-3xl text-white font-ovo text-center uppercase">
+                    Confirmación de asistencia
+                  </h1>
+                  <p className="text-sm font-legan text-white/80 text-center">
+                    {config.rsvp.detail}
+                  </p>
+                  <div className="mt-6 flex flex-col items-center gap-3">
+                    <a
+                      href={
+                        config.rsvp.whatsappGroomNumber
+                          ? `https://wa.me/${config.rsvp.whatsappGroomNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                            `Hola, que alegría! Confirmo mi asistencia a la boda. Los bendigo: ${config.coupleNames}`
+                          )}`
+                          : `https://wa.me/?text=${encodeURIComponent(
+                            `Hola, que alegría! Confirmo mi asistencia a la boda. Los bendigo: ${config.coupleNames}`
+                          )}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-green-500 hover:bg-green-600 text-white rounded-full px-5 py-3 inline-flex items-center gap-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-5 h-5" fill="currentColor" aria-hidden="true">
+                        <g transform="translate(4, 2)">
+                          <path d="M19.11 17.02c-.37-.18-2.17-1.07-2.5-1.19-.33-.12-.57-.18-.81.18-.24.37-.97 1.19-1.19 1.43-.22.24-.44.26-.81.09-.37-.18-1.56-.57-2.97-1.83-1.1-.98-1.84-2.19-2.06-2.56-.22-.37-.02-.57.16-.75.16-.16.37-.42.56-.63.19-.22.25-.37.37-.62.12-.24.06-.45-.03-.63-.09-.18-.81-1.95-1.11-2.67-.29-.69-.59-.6-.81-.61-.22-.01-.47-.01-.72-.01-.24 0-.63.09-.96.45-.33.37-1.26 1.24-1.26 3.03 0 1.78 1.29 3.5 1.47 3.75.18.24 2.54 3.86 6.16 5.41 3.62 1.56 3.62.95 4.27.89.65-.06 2.17-.88 2.48-1.73.31-.85.31-1.57.22-1.73-.09-.16-.33-.26-.7-.45z" />
+                        </g>
+                        <path d="M16 4C9.37 4 4 9.37 4 16c0 1.99.52 3.85 1.42 5.47L4 28l6.82-1.36A11.94 11.94 0 0016 28c6.63 0 12-5.37 12-12S22.63 4 16 4zM16 26c-1.7 0-3.31-.36-4.76-1.02l-.34-.16L7 26l1.2-3.06-.14-.35A9.99 9.99 0 016 16c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10z" />
+                      </svg>
+                      Confirmar a {config.groomNickName}
+                    </a>
+
+                    <a
+                      href={
+                        config.rsvp.whatsappBrideNumber
+                          ? `https://wa.me/${config.rsvp.whatsappBrideNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                            `Hola, que alegría! Confirmo mi asistencia a la boda. Los bendigo: ${config.coupleNames}`
+                          )}`
+                          : `https://wa.me/?text=${encodeURIComponent(
+                            `Hola, que alegría! Confirmo mi asistencia a la boda. Los bendigo: ${config.coupleNames}`
+                          )}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-pink-800 hover:bg-pink-900 text-white rounded-full px-5 py-3 inline-flex items-center gap-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-5 h-5" fill="currentColor" aria-hidden="true">
+                        <g transform="translate(4, 2)">
+                          <path d="M19.11 17.02c-.37-.18-2.17-1.07-2.5-1.19-.33-.12-.57-.18-.81.18-.24.37-.97 1.19-1.19 1.43-.22.24-.44.26-.81.09-.37-.18-1.56-.57-2.97-1.83-1.1-.98-1.84-2.19-2.06-2.56-.22-.37-.02-.57.16-.75.16-.16.37-.42.56-.63.19-.22.25-.37.37-.62.12-.24.06-.45-.03-.63-.09-.18-.81-1.95-1.11-2.67-.29-.69-.59-.6-.81-.61-.22-.01-.47-.01-.72-.01-.24 0-.63.09-.96.45-.33.37-1.26 1.24-1.26 3.03 0 1.78 1.29 3.5 1.47 3.75.18.24 2.54 3.86 6.16 5.41 3.62 1.56 3.62.95 4.27.89.65-.06 2.17-.88 2.48-1.73.31-.85.31-1.57.22-1.73-.09-.16-.33-.26-.7-.45z" />
+                        </g>
+                        <path d="M16 4C9.37 4 4 9.37 4 16c0 1.99.52 3.85 1.42 5.47L4 28l6.82-1.36A11.94 11.94 0 0016 28c6.63 0 12-5.37 12-12S22.63 4 16 4zM16 26c-1.7 0-3.31-.36-4.76-1.02l-.34-.16L7 26l1.2-3.06-.14-.35A9.99 9.99 0 016 16c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10z" />
+                      </svg>
+                      Confirmar a {config.brideNickName}
+                    </a>
+                  </div>
+                </div>
+              </div>
             )}
 
-            
+
             {/* Timing Section */}
             <div
-                ref={slide11Ref}
-                className={` ${isSlide11InView ? "active" : ""} fadeInMove `}
-              >
-            <WeddingTimelineVertical />
-          </div>
+              ref={slide11Ref}
+              className={` ${isSlide11InView ? "active" : ""} fadeInMove `}
+            >
+              <WeddingTimelineVertical />
+            </div>
             {/* SLIDE AKHIR */}
             <div
               className="snap-start text-white h-screen flex flex-col justify-end pt-16 pb-16 px-12 "
