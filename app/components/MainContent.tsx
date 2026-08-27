@@ -272,10 +272,10 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
               <div>
                 <h1
                   ref={slide4Ref}
-                  className={`text-xl md:text-5xl  text-white font-ovo fadeInMove ${isSlide4InView ? " active" : ""
+                  className={`text-l md:text-4xl  text-white font-ovo fadeInMove ${isSlide4InView ? " active" : ""
                     }`}
                 >
-                  A journey in love
+                 Nuestra historia de Amor
                 </h1>
                 <h3
                   ref={slide4Ref}
@@ -473,7 +473,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                     ref={slide8Ref}
                     className={`${isSlide8InView ? "active" : ""} fadeInMove w-full flex flex-col items-center`}
                   >
-                    <h1 className="text-3xl text-white font-ovo text-center uppercase mb-6">
+                    <h1 className="text-2xl text-white font-ovo text-center uppercase mb-6">
                       Nuestra Historia antes de la boda
                     </h1>
 
@@ -512,8 +512,11 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                     </div>
 
                     {/* Detalle o firma */}
-                    <div className="w-72 transform skew-x-6 drop-shadow text-center mt-2">
-                      <p className="text-3xl font-thesignature text-white/80">
+                      <p className="text-m font-legan text-white/80">
+                    Pasa las páginas...
+                    </p>
+                    <div className="w-72 transform drop-shadow text-center mt-2">
+                      <p className="text-l font-legan text-white/80">
                         {config.prewedding.detail}
                       </p>
                     </div>
