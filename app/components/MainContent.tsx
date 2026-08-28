@@ -319,6 +319,17 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                 >
                   {config.timeline_3_content}
                 </p>
+
+               <p
+                  ref={slide4Ref}
+                  className={`text-sm md:text-base font-legan text-white/90 leading-relaxed max-w-md fadeInLeftSlow ${isSlide4InView ? "active" : ""}
+                  `}
+                >
+                  <span className="block text-lg font-ovo mb-2">El amor nunca deja de ser.</span>
+                  <span className="block text-xs text-white/70 mb-3">1 Corintios 13:8</span>
+                  <span className="block">Y como un cordón de tres dobleces, caminaremos juntos: <span className="font-ovo">Dios, Erick y Lissett</span>.</span>
+                </p>
+
                 <div
                   ref={slide4Ref}
                   className={`relative flex items-center mt-5 fadeInLeft ${isSlide4InView ? " active" : ""
