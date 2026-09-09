@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowUp, IoIosArrowBack, IoIosArrowForward, IoIosHand } from "react-icons/io";
 import { FaInstagram } from "react-icons/fa";
 import Link from "next/link";
 import { useInView } from "react-intersection-observer";
@@ -35,6 +35,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
       (audioRef.current as HTMLAudioElement).play();
     }
   };
+
 
   const { ref: mainRef, inView: isMainInView } = useInView({
     threshold: 0.5,
@@ -77,12 +78,17 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
   const { ref: slide10Ref, inView: isSlide10InView } = useInView({
     threshold: 0.5,
   });
+  const { ref: parentsRef, inView: isParentsInView } = useInView({
+    threshold: 0.5,
+  });
   const { ref: slide11Ref, inView: isSlide11InView } = useInView({
     threshold: 0.5,
   });
   const { ref: endRef, inView: isEndInView } = useInView({
     threshold: 0.5,
   });
+
+
 
   useEffect(() => {
     const video = document.querySelector("iframe");
@@ -95,9 +101,21 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
     }
   }, [isSlide8InView]);
 
+
+  const bookRef = useRef<any>(null);
+  const [page, setPage] = useState(0);
+
+  const nextButtonClick = () => {
+    bookRef.current?.pageFlip().flipNext();
+  };
+
+  const prevButtonClick = () => {
+    bookRef.current?.pageFlip().flipPrev();
+  };
+
   return (
     <div
-      className={`h-screen w-screen flex flex-col md:flex-row ${fadeClass} transition-opacity duration-1000`}
+      className={`h-[100dvh] w-screen flex flex-col md:flex-row ${fadeClass} transition-opacity duration-1000`}
     >
       {/* Gambar sisi kiri Wide Untuk Komputer */}
       <div
@@ -275,7 +293,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                   className={`text-l md:text-4xl  text-white font-ovo fadeInMove ${isSlide4InView ? " active" : ""
                     }`}
                 >
-                 Nuestra historia de Amor
+                  Nuestra historia de Amor
                 </h1>
                 <h3
                   ref={slide4Ref}
@@ -320,7 +338,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                   {config.timeline_3_content}
                 </p>
 
-               <p
+                <p
                   ref={slide4Ref}
                   className={`text-sm md:text-base font-legan text-white/90 leading-relaxed max-w-md fadeInLeftSlow ${isSlide4InView ? "active" : ""}
                   `}
@@ -342,6 +360,73 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                 </div>
               </div>
             </div>
+
+
+            {/* Slide homenaje a los padres */}
+            <div
+              className="snap-start text-white h-screen flex flex-col justify-center px-12 py-16 "
+              style={{
+                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 45%, rgba(0,0,0,0.2) 100%), url(/slide_1.jpeg)`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            >
+              <div
+                ref={parentsRef}
+                className={`w-full max-w-xl fadeInMove ${isParentsInView ? "active" : ""}`}
+              >
+                <div className="space-y-4 bg-black/40 backdrop-blur-md pt-6 pb-6 px-5 rounded-2xl border border-white/10 shadow-xl">
+                  <p className="text-xs uppercase tracking-[0.35em] font-legan text-white/70">
+                    Homenaje
+                  </p>
+                  <h1 className="mt-5 text-1xl md:text-2xl font-ovo uppercase text-white leading-tight">
+                    A nuestros padres
+                  </h1>
+
+                  <p className="mt-6 text-sm md:text-base font-legan text-white/85 leading-relaxed">
+                    Gracias por guiarnos con amor, paciencia y ejemplo. Por habernos enseñado a caminar con fe,
+                    a trabajar con humildad y a amar con constancia. Hoy, al comenzar esta nueva etapa, llevamos
+                    consigo su sacrificio, su bendición y su ejemplo de hogar.
+                  </p>
+
+                  <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2">
+                    <div className="space-y-5">
+                      <div className=" pl-2">
+                        <p className="text-[0.65rem] uppercase tracking-[0.25em] font-legan text-white/65">
+                          Padres del novio
+                        </p>
+                        <p className="mt-1 font-ovo text-l text-white">
+                          Fredy Calle Santos
+                        </p>
+                        <p className="mt-1 font-ovo text-l text-white">
+                          Carmita Herrera Cumbicos
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-5">
+                      <div className=" pl-2">
+                        <p className="text-[0.65rem] uppercase tracking-[0.25em] font-legan text-white/65">
+                          Padres de la novia
+                        </p>
+                        <p className="mt-1 font-ovo text-l text-white">
+                          Diego Acosta Vallejo
+                        </p>
+                        <p className="mt-1 font-ovo text-l text-white">
+                          Lilia Molina Chávez
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="mt-8 text-sm uppercase tracking-[0.28em] font-ovo text-white/80">
+                    Con amor, {config.coupleNames}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+
             {/* Slide 5 */}
             <div
               className="snap-start  text-white h-screen flex flex-col items-center px-12 "
@@ -405,6 +490,9 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                 )}
               </div>
             </div>
+
+
+
             {/* Slide 6 */}
             <div
               className="snap-start  text-white h-screen flex flex-col items-center justify-start pt-16 px-12 "
@@ -426,6 +514,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                 <CountdownTimer />
               </div>
             </div>
+
             {/* Slide 7 */}
             {config.livestreaming.enabled && (
               <div
@@ -484,55 +573,81 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                     ref={slide8Ref}
                     className={`${isSlide8InView ? "active" : ""} fadeInMove w-full flex flex-col items-center`}
                   >
-                    <h1 className="text-2xl text-white font-ovo text-center uppercase mb-6">
-                      Nuestra Historia antes de la boda
-                    </h1>
 
-                    {/* Contenedor del Libro con efecto de pasar páginas */}
-                    <div className="my-4 flex justify-center">
-                      {/* @ts-expect-error HTMLFlipBook lacks TS types */}
-                      <HTMLFlipBook
-                        width={320}
-                        height={450}
-                        size="stretch"
-                        minWidth={280}
-                        maxWidth={400}
-                        minHeight={400}
-                        maxHeight={600}
-                        maxShadowOpacity={0.5}
-                        showCover={true}
-                        mobileScrollSupport={true}
-                        className="shadow-2xl mx-auto"
-                      >
-                        <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
-                          <img src="/book/Book_page-0001.jpg" alt="Página 1" className="w-full h-full object-contain select-none pointer-events-none" />
-                        </div>
-                        <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
-                          <img src="/book/Book_page-0002.jpg" alt="Página 2" className="w-full h-full object-contain select-none pointer-events-none" />
-                        </div>
-                        <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
-                          <img src="/book/Book_page-0003.jpg" alt="Página 3" className="w-full h-full object-contain select-none pointer-events-none" />
-                        </div>
-                        <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
-                          <img src="/book/Book_page-0004.jpg" alt="Página 4" className="w-full h-full object-contain select-none pointer-events-none" />
-                        </div>
-                        <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
-                          <img src="/book/Book_page-0005.jpg" alt="Página 5" className="w-full h-full object-contain select-none pointer-events-none" />
-                        </div>
-                      </HTMLFlipBook>
-                    </div>
+                    <div className="flex flex-col items-center my-6">
 
-                    {/* Detalle o firma */}
-                      <p className="text-m font-legan text-white/80">
-                    Pasa las páginas...
-                    </p>
-                    <div className="w-72 transform drop-shadow text-center mt-2">
-                      <p className="text-l font-legan text-white/80">
-                        {config.prewedding.detail}
-                      </p>
+                      {/* Contenedor del Libro y controles */}
+                      <div className="relative w-full max-w-[420px] mx-auto flex items-center justify-center">
+                        {/* Botón Anterior */}
+                        <button
+                          onClick={prevButtonClick}
+                          className="absolute left-0 z-10 p-2 bg-white rounded-full shadow-lg border border-gray-200 text-gray-700 hover:bg-gray-100 transition flex items-center justify-center md:-left-12"
+                          aria-label="Página anterior"
+                        >
+                          <IoIosArrowBack className="w-5 h-5" />
+                        </button>
+
+                        {/* Libro */}
+                        <div className="my-2 shadow-2xl rounded-lg overflow-hidden cursor-pointer mx-auto w-full flex justify-center">
+                          {/* @ts-expect-error HTMLFlipBook lacks TS types */}
+                          <HTMLFlipBook
+                            ref={bookRef}
+                            width={320}
+                            height={450}
+                            size="stretch"
+                            minWidth={280}
+                            maxWidth={400}
+                            minHeight={400}
+                            maxHeight={600}
+                            maxShadowOpacity={0.6}
+                            showCover={true}
+                            mobileScrollSupport={true}
+                            onFlip={(e: any) => setPage(e.data)}
+                            className="mx-auto"
+                          >
+                            <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center border-r border-gray-200">
+                              <img src="/book/Book_page-0001.jpg" alt="Página 1" className="w-full h-full object-contain select-none" />
+                            </div>
+                            <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
+                              <img src="/book/Book_page-0002.jpg" alt="Página 2" className="w-full h-full object-contain select-none" />
+                            </div>
+                            <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center border-r border-gray-200">
+                              <img src="/book/Book_page-0003.jpg" alt="Página 3" className="w-full h-full object-contain select-none" />
+                            </div>
+                            <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center">
+                              <img src="/book/Book_page-0004.jpg" alt="Página 4" className="w-full h-full object-contain select-none" />
+                            </div>
+                            <div className="bg-white shadow-inner overflow-hidden flex items-center justify-center border-r border-gray-200">
+                              <img src="/book/Book_page-0005.jpg" alt="Página 5" className="w-full h-full object-contain select-none" />
+                            </div>
+                          </HTMLFlipBook>
+                        </div>
+
+                        {/* Botón Siguiente */}
+                        <button
+                          onClick={nextButtonClick}
+                          className="absolute right-0 z-10 p-2 bg-white rounded-full shadow-lg border border-gray-200 text-gray-700 hover:bg-gray-100 transition flex items-center justify-center md:-right-12"
+                          aria-label="Página siguiente"
+                        >
+                          <IoIosArrowForward className="w-5 h-5" />
+                        </button>
+                      </div>
+
+                      <div className="mt-4 flex items-center justify-center gap-4 md:hidden">
+                        <span className="text-sm text-white/80">
+                          Página {page + 1}
+                        </span>
+                      </div>
+
+
+                      {/* Detalle o firma */}
+                      <div className="w-72 transform drop-shadow text-center mt-2">
+                        <p className="text-l font-legan text-white/80">
+                          {config.prewedding.detail}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </div></div>
+                  </div></div></div>
             )}
 
             {/* SLIDE 9 */}
