@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { IoIosArrowUp, IoIosArrowBack, IoIosArrowForward, IoIosHand } from "react-icons/io";
+import { IoIosArrowUp, IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { FaInstagram } from "react-icons/fa";
 import Link from "next/link";
 import { useInView } from "react-intersection-observer";
