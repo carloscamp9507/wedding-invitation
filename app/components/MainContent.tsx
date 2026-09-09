@@ -602,6 +602,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                             maxShadowOpacity={0.6}
                             showCover={true}
                             mobileScrollSupport={true}
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             onFlip={(e: any) => setPage(e.data)}
                             className="mx-auto"
                           >
