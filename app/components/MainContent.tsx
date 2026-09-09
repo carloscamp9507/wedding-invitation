@@ -101,7 +101,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
     }
   }, [isSlide8InView]);
 
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
   const bookRef = useRef<any>(null);
   const [page, setPage] = useState(0);
 
