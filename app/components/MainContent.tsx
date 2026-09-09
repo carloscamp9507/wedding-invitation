@@ -142,10 +142,10 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
       <div className=" md:w-1/3 h-full overflow-y-scroll snap-y snap-mandatory scroll-smooth">
         <div
           id="backgroundWedding"
-          className=" snap-start  w-full h-screen flex items-center justify-center "
+          className="snap-start  w-full h-screen flex items-center justify-center "
         >
           <div className="text-center p-5 flex flex-col h-full justify-between py-20">
-            <div className="gap-y-2 md:gap-y-4 flex flex-col">
+            <div className="mt-10 gap-y-2 md:gap-y-4 flex flex-col">
               <h5
                 className={`text-sm font-legan text-white uppercase tracking-wide fadeMain2 ${isMain2InView ? "active" : ""
                   } `}
@@ -173,8 +173,8 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                 })}
               </h5>
             </div>
-            <div>
-              <p className="mt-4 uppercase text-sm font-xs tracking-widest text-white">
+            <div className="mb-10">
+              <p className="mt-5 uppercase text-sm font-xs tracking-widest text-white">
                 {name ? `Dear ${name},` : "Bienvenidos"}
               </p>
               {!isOpen ? (
@@ -229,7 +229,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
               {/* Display the content when the button is clicked */}
               <div
                 ref={slide2Ref}
-                className={`fadeInMove ${isSlide2InView ? "active" : ""}  `}
+                className={` mb-10 fadeInMove ${isSlide2InView ? "active" : ""}  `}
               >
                 <p className="font-legan text-sm my-2">El Novio</p>
                 <h1 className="text-xl md:text-3xl text-white  font-ovo">
@@ -259,7 +259,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
             >
               <div
                 ref={slide3Ref}
-                className={`fadeInMove ${isSlide3InView ? "active" : ""}  `}
+                className={` mb-10 fadeInMove ${isSlide3InView ? "active" : ""}  `}
               >
                 <p className="font-legan text-sm my-2">La Novia</p>
                 <h1 className="text-xl md:text-3xl text-white  font-ovo">
@@ -364,63 +364,48 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
 
             {/* Slide homenaje a los padres */}
             <div
-              className="snap-start text-white h-screen flex flex-col justify-center px-12 py-16 "
+              className="snap-start text-white h-screen flex flex-col justify-center px-6 py-16"
               style={{
-                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 45%, rgba(0,0,0,0.2) 100%), url(/slide_1.jpeg)`,
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80')`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
             >
               <div
                 ref={parentsRef}
-                className={`w-full max-w-xl fadeInMove ${isParentsInView ? "active" : ""}`}
+                className={`w-full fadeInMove ${isParentsInView ? "active" : ""}`}
               >
-                <div className="space-y-4 bg-black/40 backdrop-blur-md pt-6 pb-6 px-5 rounded-2xl border border-white/10 shadow-xl">
-                  <p className="text-xs uppercase tracking-[0.35em] font-legan text-white/70">
-                    Homenaje
-                  </p>
-                  <h1 className="mt-5 text-1xl md:text-2xl font-ovo uppercase text-white leading-tight">
-                    A nuestros padres
-                  </h1>
-
-                  <p className="mt-6 text-sm md:text-base font-legan text-white/85 leading-relaxed">
-                    Gracias por guiarnos con amor, paciencia y ejemplo. Por habernos enseñado a caminar con fe,
-                    a trabajar con humildad y a amar con constancia. Hoy, al comenzar esta nueva etapa, llevamos
-                    consigo su sacrificio, su bendición y su ejemplo de hogar.
+                <div className="border border-white/40 bg-black/25 backdrop-blur-[1px] p-6 md:p-8 max-w-lg mx-auto text-center text-white relative shadow-2xl">
+                  <p className="text-[0.6rem] md:text-[0.7rem] uppercase tracking-[0.28em] font-legan text-white/80">
+                    CON LA BENDICIÓN DE DIOS Y NUESTROS PADRES:
                   </p>
 
-                  <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2">
-                    <div className="space-y-5">
-                      <div className=" pl-2">
-                        <p className="text-[0.65rem] uppercase tracking-[0.25em] font-legan text-white/65">
-                          Padres del novio
-                        </p>
-                        <p className="mt-1 font-ovo text-l text-white">
-                          Fredy Calle Santos
-                        </p>
-                        <p className="mt-1 font-ovo text-l text-white">
-                          Carmita Herrera Cumbicos
-                        </p>
-                      </div>
+                  <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+                    <div className="space-y-3 text-sm md:text-base">
+                      <p className="font-ovo text-white/90">Fredy Genaro Calle Santos</p>
+                      <p className="font-ovo text-white/90">Carmita Esperanza Herrera Cumbicos</p>
                     </div>
 
-                    <div className="space-y-5">
-                      <div className=" pl-2">
-                        <p className="text-[0.65rem] uppercase tracking-[0.25em] font-legan text-white/65">
-                          Padres de la novia
-                        </p>
-                        <p className="mt-1 font-ovo text-l text-white">
-                          Diego Acosta Vallejo
-                        </p>
-                        <p className="mt-1 font-ovo text-l text-white">
-                          Lilia Molina Chávez
-                        </p>
-                      </div>
+                    <div className="space-y-3 text-sm md:text-base">
+                      <p className="font-ovo text-white/90">Lilia Margarita Molina Chávez</p>
+                      <p className="font-ovo text-white/90">Diego René Acosta Vallejo</p>
                     </div>
                   </div>
 
-                  <p className="mt-8 text-sm uppercase tracking-[0.28em] font-ovo text-white/80">
-                    Con amor, {config.coupleNames}
+                  <div className="mt-8 flex items-center justify-center">
+                    <div className="h-px w-10 bg-white/50" />
+                    <p className="px-4 text-[0.6rem] md:text-[0.7rem] uppercase tracking-[0.35em] font-legan text-white/80">
+                      NOSOTROS
+                    </p>
+                    <div className="h-px w-10 bg-white/50" />
+                  </div>
+
+                  <h2 className="mt-8 font-serif italic text-4xl md:text-5xl tracking-wide font-light text-white leading-none">
+                     {config.coupleNames}
+                  </h2>
+
+                  <p className="mt-8 text-[0.62rem] md:text-[0.72rem] uppercase tracking-[0.25em] font-legan text-white/90 leading-relaxed">
+                    TIENEMOS EL HONOR DE INVITARTE A CELEBRAR NUESTRA BODA
                   </p>
                 </div>
               </div>
@@ -504,7 +489,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
             >
               <div
                 ref={slide6Ref}
-                className={` ${isSlide6InView ? "active" : ""
+                className={`mt-10  ${isSlide6InView ? "active" : ""
                   }  fadeInMove flex items-center flex-col`}
               >
                 <h1 className="text-2xl text-center text-white  font-ovo">
@@ -707,7 +692,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
               >
                 <div
                   ref={slide9Ref}
-                  className={`${isSlide9InView ? "active" : ""} fadeInMove`}
+                  className={`mb-10  ${isSlide9InView ? "active" : ""} fadeInMove`}
                 >
                   <h1 className="text-3xl text-white font-ovo text-center uppercase">
                     Confirmación de asistencia
@@ -770,7 +755,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
             {/* Timing Section */}
             <div
               ref={slide11Ref}
-              className={` ${isSlide11InView ? "active" : ""} fadeInMove `}
+              className={`mb-10  ${isSlide11InView ? "active" : ""} fadeInMove `}
             >
               <WeddingTimelineVertical />
             </div>
