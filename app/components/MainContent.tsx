@@ -182,7 +182,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                   className="animate-bounce  mt-5 px-5 py-1  text-xs border border-white hover:text-white hover:bg-transparent rounded-full bg-white text-black transition"
                   onClick={handleOpen}
                 >
-                  Abrir Invitación
+                 - Abrir Invitación -
                 </button>
               ) : (
                 <IoIosArrowUp
