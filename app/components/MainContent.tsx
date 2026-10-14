@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { IoIosArrowUp, IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { FaInstagram } from "react-icons/fa";
+import Image from "next/image";
 import Link from "next/link";
 import { useInView } from "react-intersection-observer";
 import CountdownTimer from "./Countdown";
@@ -17,7 +18,31 @@ type WeddingScreenProps = {
 const WeddingScreen = ({ name }: WeddingScreenProps) => {
   const [fadeClass, setFadeClass] = useState("opacity-0");
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedGalleryPhoto, setSelectedGalleryPhoto] = useState<{
+    src: string;
+    alt: string;
+  } | null>(null);
   const audioRef = useRef(null);
+
+  useEffect(() => {
+    if (!selectedGalleryPhoto) {
+      return;
+    }
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSelectedGalleryPhoto(null);
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [selectedGalleryPhoto]);
 
   // Untuk fade-in pertama kali
   useEffect(() => {
@@ -405,7 +430,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                   </h2>
 
                   <p className="mt-8 text-[0.62rem] md:text-[0.72rem] uppercase tracking-[0.25em] font-legan text-white/90 leading-relaxed">
-                    TIENEMOS EL HONOR DE INVITARTE A CELEBRAR NUESTRA BODA
+                    TENEMOS EL HONOR DE INVITARTE A CELEBRAR NUESTRA BODA
                   </p>
                 </div>
               </div>
@@ -700,6 +725,10 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                   <p className="text-sm font-legan text-white/80 text-center">
                     {config.rsvp.detail}
                   </p>
+                  <p className="mx-auto mt-4 max-w-md text-center text-sm font-legan leading-relaxed text-white/80">
+                    Adoramos a tus pequeños, sin embargo, este evento está
+                    destinado solo para adultos. ¡Esperando tu comprensión!
+                  </p>
                   <div className="mt-6 flex flex-col items-center gap-3">
                     <a
                       href={
@@ -759,6 +788,166 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
             >
               <WeddingTimelineVertical />
             </div>
+
+            {/* Galería */}
+            <section className="snap-start min-h-screen bg-[#f1eee8] px-4 py-12 text-[#302d29] md:px-8">
+              <div className="mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-4xl flex-col justify-center">
+                <div className="mb-6 text-center">
+                  <p className="font-legan text-xs uppercase tracking-[0.3em] text-[#8a7d6c]">
+                    Nuestros momentos
+                  </p>
+                  <h2 className="mt-2 font-ovo text-2xl uppercase tracking-wide md:text-3xl">
+                    Una historia en imágenes
+                  </h2>
+                </div>
+
+                <div className="space-y-1 bg-white p-1 shadow-[0_18px_50px_rgba(50,40,30,0.12)]">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setSelectedGalleryPhoto({
+                        src: "/foto_1_samping.webp",
+                        alt: "Retrato de los novios",
+                      })
+                    }
+                    aria-label="Ampliar retrato de los novios"
+                    className="group relative block aspect-[2/1] w-full cursor-pointer overflow-hidden bg-[#e9e4dc]"
+                  >
+                    <Image
+                      src="/foto_1_samping.webp"
+                      alt="Retrato de los novios"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 800px"
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                    />
+                  </button>
+
+                  <div className="grid grid-cols-5 gap-1">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setSelectedGalleryPhoto({
+                          src: "/foto_1.jpeg",
+                          alt: "Un recuerdo especial de los novios",
+                        })
+                      }
+                      aria-label="Ampliar foto de los novios"
+                      className="group relative col-span-2 block aspect-square cursor-pointer overflow-hidden bg-[#e9e4dc]"
+                    >
+                      <Image
+                        src="/foto_1.jpeg"
+                        alt="Un recuerdo especial de los novios"
+                        fill
+                        sizes="(max-width: 768px) 40vw, 320px"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                      />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setSelectedGalleryPhoto({
+                          src: "/foto_2.webp",
+                          alt: "Una imagen de nuestra historia",
+                        })
+                      }
+                      aria-label="Ampliar foto de nuestra historia"
+                      className="group relative col-span-3 block aspect-[3/4] cursor-pointer overflow-hidden bg-[#e9e4dc]"
+                    >
+                      <Image
+                        src="/foto_2.webp"
+                        alt="Una imagen de nuestra historia"
+                        fill
+                        sizes="(max-width: 768px) 60vw, 480px"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                      />
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-center gap-5 py-5 text-center font-ovo text-sm tracking-[0.35em] text-[#746958]">
+                    <span aria-hidden="true" className="h-px w-12 bg-[#d8d0c4]" />
+                    <div aria-label="6 de julio de 2024" className="flex flex-col gap-1">
+                      <span>27</span>
+                      <span>03</span>
+                      <span>27</span>
+                    </div>
+                    <span aria-hidden="true" className="h-px w-12 bg-[#d8d0c4]" />
+                  </div>
+
+                  <div className="grid grid-cols-5 gap-1">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setSelectedGalleryPhoto({
+                          src: "/foto_3.jpg",
+                          alt: "Un momento para recordar",
+                        })
+                      }
+                      aria-label="Ampliar foto de un momento para recordar"
+                      className="group relative col-span-3 block aspect-[4/3] cursor-pointer overflow-hidden bg-[#e9e4dc]"
+                    >
+                      <Image
+                        src="/foto_3.jpg"
+                        alt="Un momento para recordar"
+                        fill
+                        sizes="(max-width: 768px) 60vw, 480px"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                      />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setSelectedGalleryPhoto({
+                          src: "/foto_4.jpeg",
+                          alt: "Un recuerdo de nuestra historia",
+                        })
+                      }
+                      aria-label="Ampliar recuerdo de nuestra historia"
+                      className="group relative col-span-2 block aspect-[2/3] cursor-pointer overflow-hidden bg-[#e9e4dc]"
+                    >
+                      <Image
+                        src="/foto_4.jpeg"
+                        alt="Un recuerdo de nuestra historia"
+                        fill
+                        sizes="(max-width: 768px) 40vw, 320px"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {selectedGalleryPhoto && (
+              <div
+                role="dialog"
+                aria-modal="true"
+                aria-label="Foto ampliada"
+                onClick={() => setSelectedGalleryPhoto(null)}
+                className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
+              >
+                <button
+                  type="button"
+                  onClick={() => setSelectedGalleryPhoto(null)}
+                  aria-label="Cerrar foto ampliada"
+                  className="absolute right-5 top-4 z-10 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-black/40 text-4xl leading-none text-white transition hover:bg-black/70"
+                >
+                  &times;
+                </button>
+                <div
+                  className="relative h-[80vh] w-[90vw] max-w-6xl animate-[lightbox-enter_250ms_ease-out]"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <Image
+                    src={selectedGalleryPhoto.src}
+                    alt={selectedGalleryPhoto.alt}
+                    fill
+                    sizes="90vw"
+                    className="rounded-lg object-contain"
+                  />
+                </div>
+              </div>
+            )}
+
             {/* SLIDE AKHIR */}
             <div
               className="snap-start text-white h-screen flex flex-col justify-end pt-16 pb-16 px-12 "
@@ -785,13 +974,15 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                   </p>
                 </div>
               </div>
+               <footer className="mt-8 text-center">
+                  <p className="text-[0.5rem] uppercase tracking-widest text-white/50">
+                    Created By Carlos Campoverde
+                  </p>
+                </footer>
 
-              <footer className="flex flex-col items-center mt-8">
-                <p className="text-[0.5rem] uppercase text-center">
-                  Created By Carlos Campoverde
-                </p>
-              </footer>
             </div>
+
+            
           </>
         )}
       </div>

@@ -5,31 +5,31 @@ import React from 'react';
 export default function WeddingTimelineVertical() {
   const timelineEvents = [
     {
-      time: "15:00",
+      time: "11:00",
       title: "Ceremonia",
       description: "El inicio de nuestra historia para toda la vida.",
       icon: "",
     },
     {
-      time: "16:30",
+      time: "12:30",
       title: "Cóctel",
       description: "Un momento para compartir, conversar y brindar.",
       icon: "",
     },
     {
-      time: "18:00",
+      time: "13:00",
       title: "Recepción",
       description: "La bienvenida oficial al salón y entrada de los novios.",
       icon: "",
     },
     {
-      time: "19:30",
-      title: "Cena",
+      time: "14:30",
+      title: "Almuerzo",
       description: "Disfrutaremos de una deliciosa cena juntos.",
       icon: "",
     },
     {
-      time: "21:00",
+      time: "16:00",
       title: "Fiesta",
       description: "A abrir la pista de baile y celebrar sin parar.",
       icon: "",
