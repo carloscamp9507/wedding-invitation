@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@next/font": "^14.2.10",
+    "@supabase/supabase-js": "^2.118.0",
+    "canvas-confetti": "^1.9.4",
     "mongodb": "^6.9.0",
     "mongoose": "^8.6.2",
     "next": "14.2.10",
@@ -21,6 +23,7 @@
     "react-type-animation": "^3.2.0"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

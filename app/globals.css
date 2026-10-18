@@ -53,16 +53,16 @@ body {
 
 @keyframes animate {
  0% {
-  background-image: url(../public/foto_2.webp);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url(../public/foto_2.webp);
  }
  35% {
-  background-image: url(../public/foto_1.jpeg);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url(../public/foto_1.jpeg);
  }
   75% {
-    background-image: url(../public/foto_2.webp);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url(../public/foto_2.webp);
   }
   100% {
-    background-image: url(../public/foto_4.jpeg);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url(../public/foto_4.jpeg);
   }
 }
 

@@ -1,28 +1,229 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, type FormEvent } from "react";
 import { IoIosArrowUp, IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { FaInstagram } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
+import confetti from "canvas-confetti";
 import { useInView } from "react-intersection-observer";
 import CountdownTimer from "./Countdown";
 import WeddingTimelineVertical from "./WeddingTimelineVertical";
 import { config } from "@/lib/config";
+import { getSupabaseClient, type Database } from "@/lib/supabase";
 import HTMLFlipBook from 'react-pageflip';
 
-type WeddingScreenProps = {
-  name?: string;
+type Guest = Database["public"]["Tables"]["invitados"]["Row"];
+
+const getErrorMessage = (error: unknown, fallback: string) => {
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "message" in error &&
+    typeof error.message === "string"
+  ) {
+    return error.message;
+  }
+
+  return fallback;
 };
 
-const WeddingScreen = ({ name }: WeddingScreenProps) => {
+const WeddingScreen = () => {
   const [fadeClass, setFadeClass] = useState("opacity-0");
   const [isOpen, setIsOpen] = useState(false);
+  const [guest, setGuest] = useState<Guest | null>(null);
+  const [guestToken, setGuestToken] = useState("");
+  const [guestLoading, setGuestLoading] = useState(true);
+  const [guestError, setGuestError] = useState("");
+  const [isEditingRsvp, setIsEditingRsvp] = useState(true);
+  const [attendance, setAttendance] = useState<boolean | null>(null);
+  const [blessingMessage, setBlessingMessage] = useState("");
+  const [weddingQuestion, setWeddingQuestion] = useState("");
+  const [isSavingRsvp, setIsSavingRsvp] = useState(false);
+  const [rsvpError, setRsvpError] = useState("");
   const [selectedGalleryPhoto, setSelectedGalleryPhoto] = useState<{
     src: string;
     alt: string;
   } | null>(null);
   const audioRef = useRef(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const token = new URLSearchParams(window.location.search).get("token")?.trim();
+
+    if (!token) {
+      setGuestError("No encontramos el token de esta invitación. Abre el enlace personalizado que recibiste.");
+      setGuestLoading(false);
+      return;
+    }
+
+    setGuestToken(token);
+
+    const loadGuest = async () => {
+      const startedAt = Date.now();
+      console.info("[RSVP] Guest lookup started.", {
+        table: "invitados",
+        tokenProvided: true,
+        tokenLength: token.length,
+      });
+
+      try {
+        console.info("[RSVP] Building guest lookup query.", {
+          operation: "select",
+          filterColumn: "token",
+          resultMode: "maybeSingle",
+        });
+
+        const result = await getSupabaseClient()
+          .from("invitados")
+          .select("*")
+          .eq("token", token)
+          .maybeSingle();
+
+        console.info("[RSVP] Guest lookup query completed.", {
+          hasData: result.data !== null,
+          hasError: result.error !== null,
+          durationMs: Date.now() - startedAt,
+        });
+
+        if (result.error) {
+          console.error("[RSVP] Guest lookup returned a Supabase error.", {
+            message: result.error.message,
+            code: result.error.code,
+            details: result.error.details,
+            hint: result.error.hint,
+          });
+          throw result.error;
+        }
+        if (!result.data) {
+          throw new Error("No encontramos una invitación con ese token.");
+        }
+        if (cancelled) {
+          return;
+        }
+
+        setGuest(result.data);
+        setAttendance(result.data.confirmado);
+        setBlessingMessage(result.data.mensaje_bendicion ?? "");
+        setWeddingQuestion(result.data.pregunta_opcional ?? "");
+        setIsEditingRsvp(result.data.confirmado === null);
+        console.info("[RSVP] Guest lookup succeeded; invitation state populated.", {
+          guestFound: true,
+          rsvpAlreadySubmitted: result.data.confirmado !== null,
+          durationMs: Date.now() - startedAt,
+        });
+      } catch (error) {
+        console.error("[RSVP] Guest lookup failed.", {
+          message: getErrorMessage(error, "Unknown error"),
+          durationMs: Date.now() - startedAt,
+        });
+        if (!cancelled) {
+          setGuestError(
+            getErrorMessage(error, "No se pudieron cargar los datos de la invitación.")
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setGuestLoading(false);
+        }
+      }
+    };
+
+    void loadGuest();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const saveRsvp = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!guestToken || attendance === null) {
+      setRsvpError("Selecciona si podrás acompañarnos antes de guardar.");
+      return;
+    }
+
+    setIsSavingRsvp(true);
+    setRsvpError("");
+    const startedAt = Date.now();
+
+    console.info("[RSVP] Save started.", {
+      table: "invitados",
+      tokenProvided: true,
+      tokenLength: guestToken.length,
+      attendance,
+      blessingMessageLength: blessingMessage.length,
+      weddingQuestionLength: weddingQuestion.length,
+      fields: ["confirmado", "mensaje_bendicion", "pregunta_opcional", "updated_at"],
+    });
+
+    try {
+      console.info("[RSVP] Sending update to Supabase.", {
+        operation: "update",
+        filterColumn: "token",
+      });
+
+      const result = await getSupabaseClient()
+        .from("invitados")
+        .update({
+          confirmado: attendance,
+          mensaje_bendicion: blessingMessage,
+          pregunta_opcional: weddingQuestion,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("token", guestToken)
+        .select("*")
+        .single();
+
+      console.info("[RSVP] Update query completed.", {
+        hasData: result.data !== null,
+        hasError: result.error !== null,
+        durationMs: Date.now() - startedAt,
+      });
+
+      if (result.error) {
+        console.error("[RSVP] Update returned a Supabase error.", {
+          message: result.error.message,
+          code: result.error.code,
+          details: result.error.details,
+          hint: result.error.hint,
+        });
+        throw result.error;
+      }
+
+      setGuest(result.data);
+      setAttendance(result.data.confirmado);
+      setBlessingMessage(result.data.mensaje_bendicion ?? "");
+      setWeddingQuestion(result.data.pregunta_opcional ?? "");
+      setIsEditingRsvp(false);
+      if (attendance && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        confetti({
+          particleCount: 130,
+          spread: 75,
+          origin: { x: window.innerWidth >= 768 ? 0.80 : 0.5, y: window.innerWidth >= 768 ? 0.95 : 0.65 },
+          colors: ["#0B1F3A", "#D4AF37", "#F4E7B2"],
+          disableForReducedMotion: true,
+        });
+      }
+      console.info("[RSVP] Save succeeded; confirmation view displayed.", {
+        durationMs: Date.now() - startedAt,
+      });
+    } catch (error) {
+      console.error("[RSVP] Save failed.", {
+        message: getErrorMessage(error, "Unknown error"),
+        durationMs: Date.now() - startedAt,
+      });
+      setRsvpError(
+        getErrorMessage(error, "No se pudo guardar tu respuesta. Inténtalo nuevamente.")
+      );
+    } finally {
+      setIsSavingRsvp(false);
+    }
+  };
 
   useEffect(() => {
     if (!selectedGalleryPhoto) {
@@ -197,17 +398,28 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                   day: "numeric",
                 })}
               </h5>
+              <p className="mt-5 text-xs font-legan uppercase tracking-[0.25em] text-white/80">
+                una invitación para
+              </p>
+              <p className="font-ovo text-lg uppercase tracking-wide text-white">
+                {guestLoading ? "Cargando invitado..." : guest?.nombre ?? "Invitado"}
+              </p>
+              {guest && (
+                <p className="text-xs font-legan text-white/80">
+                  {guest.pases} {guest.pases === 1 ? "pase reservado" : "pases reservados"}
+                </p>
+              )}
             </div>
             <div className="mb-10">
               <p className="mt-5 uppercase text-sm font-xs tracking-widest text-white">
-                {name ? `Dear ${name},` : "Bienvenidos"}
+                Bienvenidos
               </p>
               {!isOpen ? (
                 <button
                   className="animate-bounce  mt-5 px-5 py-1  text-xs border border-white hover:text-white hover:bg-transparent rounded-full bg-white text-black transition"
                   onClick={handleOpen}
                 >
-                 - Abrir Invitación -
+                 Abrir Invitación
                 </button>
               ) : (
                 <IoIosArrowUp
@@ -368,9 +580,9 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                   className={`text-sm md:text-base font-legan text-white/90 leading-relaxed max-w-md fadeInLeftSlow ${isSlide4InView ? "active" : ""}
                   `}
                 >
-                  <span className="block text-lg font-ovo mb-2">El amor nunca deja de ser.</span>
+                  <span className="block text-s font-ovo mb-2">El amor nunca deja de ser.</span>
                   <span className="block text-xs text-white/70 mb-3">1 Corintios 13:8</span>
-                  <span className="block">Y como un cordón de tres dobleces, caminaremos juntos: <span className="font-ovo">Dios, Erick y Lissett</span>.</span>
+                  <span className="block text-xs">Y como un cordón de tres dobleces, caminaremos juntos: <span className="font-ovo">Dios, Erick y Lissett</span>.</span>
                 </p>
 
                 <div
@@ -708,74 +920,134 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
             {/* SLIDE 10 */}
             {config.rsvp.enabled && (
               <div
-                className="snap-start text-white h-screen flex flex-col justify-end pt-16 pb-16 px-8"
+                className="snap-start min-h-screen text-white flex flex-col justify-center py-16 px-8"
                 style={{
-                  backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_9.jpeg)`,
+                  backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 70%, transparent 100%), url(/slide_11.webp)`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
               >
                 <div
                   ref={slide9Ref}
-                  className={`mb-10  ${isSlide9InView ? "active" : ""} fadeInMove`}
+                  className={`mx-auto w-full max-w-lg ${isSlide9InView ? "active" : ""} fadeInMove`}
                 >
                   <h1 className="text-3xl text-white font-ovo text-center uppercase">
                     Confirmación de asistencia
                   </h1>
-                  <p className="text-sm font-legan text-white/80 text-center">
+                  <p className="mt-2 text-center text-sm font-legan text-white/80">
                     {config.rsvp.detail}
                   </p>
-                  <p className="mx-auto mt-4 max-w-md text-center text-sm font-legan leading-relaxed text-white/80">
-                    Adoramos a tus pequeños, sin embargo, este evento está
-                    destinado solo para adultos. ¡Esperando tu comprensión!
-                  </p>
-                  <div className="mt-6 flex flex-col items-center gap-3">
-                    <a
-                      href={
-                        config.rsvp.whatsappGroomNumber
-                          ? `https://wa.me/${config.rsvp.whatsappGroomNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
-                            `Hola, que alegría! Confirmo mi asistencia a la boda. Los bendigo: ${config.coupleNames}`
-                          )}`
-                          : `https://wa.me/?text=${encodeURIComponent(
-                            `Hola, que alegría! Confirmo mi asistencia a la boda. Los bendigo: ${config.coupleNames}`
-                          )}`
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-green-500 hover:bg-green-600 text-white rounded-full px-5 py-3 inline-flex items-center gap-2"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-5 h-5" fill="currentColor" aria-hidden="true">
-                        <g transform="translate(4, 2)">
-                          <path d="M19.11 17.02c-.37-.18-2.17-1.07-2.5-1.19-.33-.12-.57-.18-.81.18-.24.37-.97 1.19-1.19 1.43-.22.24-.44.26-.81.09-.37-.18-1.56-.57-2.97-1.83-1.1-.98-1.84-2.19-2.06-2.56-.22-.37-.02-.57.16-.75.16-.16.37-.42.56-.63.19-.22.25-.37.37-.62.12-.24.06-.45-.03-.63-.09-.18-.81-1.95-1.11-2.67-.29-.69-.59-.6-.81-.61-.22-.01-.47-.01-.72-.01-.24 0-.63.09-.96.45-.33.37-1.26 1.24-1.26 3.03 0 1.78 1.29 3.5 1.47 3.75.18.24 2.54 3.86 6.16 5.41 3.62 1.56 3.62.95 4.27.89.65-.06 2.17-.88 2.48-1.73.31-.85.31-1.57.22-1.73-.09-.16-.33-.26-.7-.45z" />
-                        </g>
-                        <path d="M16 4C9.37 4 4 9.37 4 16c0 1.99.52 3.85 1.42 5.47L4 28l6.82-1.36A11.94 11.94 0 0016 28c6.63 0 12-5.37 12-12S22.63 4 16 4zM16 26c-1.7 0-3.31-.36-4.76-1.02l-.34-.16L7 26l1.2-3.06-.14-.35A9.99 9.99 0 016 16c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10z" />
-                      </svg>
-                      Confirmar a {config.groomNickName}
-                    </a>
-
-                    <a
-                      href={
-                        config.rsvp.whatsappBrideNumber
-                          ? `https://wa.me/${config.rsvp.whatsappBrideNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
-                            `Hola, que alegría! Confirmo mi asistencia a la boda. Los bendigo: ${config.coupleNames}`
-                          )}`
-                          : `https://wa.me/?text=${encodeURIComponent(
-                            `Hola, que alegría! Confirmo mi asistencia a la boda. Los bendigo: ${config.coupleNames}`
-                          )}`
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-pink-800 hover:bg-pink-900 text-white rounded-full px-5 py-3 inline-flex items-center gap-2"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-5 h-5" fill="currentColor" aria-hidden="true">
-                        <g transform="translate(4, 2)">
-                          <path d="M19.11 17.02c-.37-.18-2.17-1.07-2.5-1.19-.33-.12-.57-.18-.81.18-.24.37-.97 1.19-1.19 1.43-.22.24-.44.26-.81.09-.37-.18-1.56-.57-2.97-1.83-1.1-.98-1.84-2.19-2.06-2.56-.22-.37-.02-.57.16-.75.16-.16.37-.42.56-.63.19-.22.25-.37.37-.62.12-.24.06-.45-.03-.63-.09-.18-.81-1.95-1.11-2.67-.29-.69-.59-.6-.81-.61-.22-.01-.47-.01-.72-.01-.24 0-.63.09-.96.45-.33.37-1.26 1.24-1.26 3.03 0 1.78 1.29 3.5 1.47 3.75.18.24 2.54 3.86 6.16 5.41 3.62 1.56 3.62.95 4.27.89.65-.06 2.17-.88 2.48-1.73.31-.85.31-1.57.22-1.73-.09-.16-.33-.26-.7-.45z" />
-                        </g>
-                        <path d="M16 4C9.37 4 4 9.37 4 16c0 1.99.52 3.85 1.42 5.47L4 28l6.82-1.36A11.94 11.94 0 0016 28c6.63 0 12-5.37 12-12S22.63 4 16 4zM16 26c-1.7 0-3.31-.36-4.76-1.02l-.34-.16L7 26l1.2-3.06-.14-.35A9.99 9.99 0 016 16c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10z" />
-                      </svg>
-                      Confirmar a {config.brideNickName}
-                    </a>
+                  <div className="mx-auto mt-5 max-w-md rounded-xl border border-amber-100/25 bg-black/35 px-4 py-3 shadow-lg backdrop-blur-sm">
+                    <p className="text-center text-sm font-legan leading-relaxed text-amber-50/95">
+                      Adoramos a tus pequeños, sin embargo, este evento está destinado solo para adultos. ¡Esperando tu comprensión!
+                    </p>
                   </div>
+                  <p className="mt-4 text-center text-xs font-legan text-white/80">
+                    Confirma antes del 31 de enero del 2026. Podrás modificar tu respuesta después si cambias de opinión.
+                  </p>
+
+                  {guestLoading ? (
+                    <p className="mt-6 text-center text-sm text-white/80" role="status">
+                      Cargando los datos de tu invitación...
+                    </p>
+                  ) : guestError ? (
+                    <p className="mt-6 text-center text-sm text-red-200" role="alert">
+                      {guestError}
+                    </p>
+                  ) : guest && !isEditingRsvp ? (
+                    <div className="mt-8 rounded-2xl border border-white/20 bg-black/45 p-6 text-center backdrop-blur-sm">
+                      <p className="font-ovo text-lg">
+                        {guest.confirmado
+                          ? "¡Nos alegra mucho que nos acompañes en este día tan especial!"
+                          : "Nos apena que no puedas acompañarnos este día, ¡te llevaremos en el corazón!"}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setRsvpError("");
+                          setIsEditingRsvp(true);
+                        }}
+                        className="mt-5 rounded-full border border-white/70 px-5 py-2 text-sm transition hover:bg-white hover:text-black"
+                      >
+                        Modificar mi respuesta
+                      </button>
+                    </div>
+                  ) : guest ? (
+                    <form
+                      onSubmit={saveRsvp}
+                      className="mt-7 space-y-5 rounded-2xl border border-white/20 bg-black/45 p-5 backdrop-blur-sm"
+                    >
+                      <fieldset>
+                        <legend className="mb-3 w-full text-center font-ovo">
+                          ¿Podrás acompañarnos?
+                        </legend>
+                        <div className="grid grid-cols-2 gap-3">
+                          <button
+                            type="button"
+                            aria-pressed={attendance === true}
+                            onClick={() => setAttendance(true)}
+                            className={`rounded-full border px-3 py-3 text-sm transition ${
+                              attendance === true
+                                ? "border-white bg-white text-black"
+                                : "border-white/50 text-white hover:bg-white/15"
+                            }`}
+                          >
+                            Sí asistiremos
+                          </button>
+                          <button
+                            type="button"
+                            aria-pressed={attendance === false}
+                            onClick={() => setAttendance(false)}
+                            className={`rounded-full border px-3 py-3 text-sm transition ${
+                              attendance === false
+                                ? "border-white bg-white text-black"
+                                : "border-white/50 text-white hover:bg-white/15"
+                            }`}
+                          >
+                            No podremos
+                          </button>
+                        </div>
+                      </fieldset>
+
+                      <label className="block text-sm font-legan">
+                        Mensaje de bendición para los novios
+                        <textarea
+                          value={blessingMessage}
+                          onChange={(event) => setBlessingMessage(event.target.value)}
+                          rows={3}
+                          maxLength={1000}
+                          className="mt-2 w-full rounded-lg border border-white/30 bg-black/40 px-3 py-2 text-white outline-none placeholder:text-white/50 focus:border-white"
+                          placeholder="Escribe aquí tu mensaje..."
+                        />
+                      </label>
+
+                      <label className="block text-sm font-legan">
+                        Preguntas de la boda (opcional)
+                        <textarea
+                          value={weddingQuestion}
+                          onChange={(event) => setWeddingQuestion(event.target.value)}
+                          rows={2}
+                          maxLength={1000}
+                          className="mt-2 w-full rounded-lg border border-white/30 bg-black/40 px-3 py-2 text-white outline-none placeholder:text-white/50 focus:border-white"
+                          placeholder="¿Tienes alguna pregunta?"
+                        />
+                      </label>
+
+                      {rsvpError && (
+                        <p className="text-center text-sm text-red-200" role="alert">
+                          {rsvpError}
+                        </p>
+                      )}
+
+                      <button
+                        type="submit"
+                        disabled={isSavingRsvp}
+                        className="w-full rounded-full bg-white px-5 py-3 font-ovo text-sm text-black transition hover:bg-white/85 disabled:cursor-wait disabled:opacity-60"
+                      >
+                        {isSavingRsvp ? "Guardando..." : "Guardar mi respuesta"}
+                      </button>
+                    </form>
+                  ) : null}
                 </div>
               </div>
             )}
