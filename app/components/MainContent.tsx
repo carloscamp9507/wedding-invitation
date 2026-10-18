@@ -920,7 +920,7 @@ const WeddingScreen = () => {
             {/* SLIDE 10 */}
             {config.rsvp.enabled && (
               <div
-                className="snap-start min-h-screen text-white flex flex-col justify-center py-16 px-8"
+                className="snap-start min-h-[100svh] text-white flex flex-col justify-center py-6 px-5 md:py-12 md:px-8"
                 style={{
                   backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 70%, transparent 100%), url(/slide_11.webp)`,
                   backgroundSize: "cover",
@@ -931,18 +931,13 @@ const WeddingScreen = () => {
                   ref={slide9Ref}
                   className={`mx-auto w-full max-w-lg ${isSlide9InView ? "active" : ""} fadeInMove`}
                 >
-                  <h1 className="text-3xl text-white font-ovo text-center uppercase">
+                  <h3 className="text-2xl text-white font-ovo text-center uppercase md:text-3xl">
                     Confirmación de asistencia
-                  </h1>
-                  <p className="mt-2 text-center text-sm font-legan text-white/80">
+                  </h3>
+                  <p className="mt-1 text-center text-xs font-legan text-white/80 md:mt-2 md:text-sm">
                     {config.rsvp.detail}
                   </p>
-                  <div className="mx-auto mt-5 max-w-md rounded-xl border border-amber-100/25 bg-black/35 px-4 py-3 shadow-lg backdrop-blur-sm">
-                    <p className="text-center text-sm font-legan leading-relaxed text-amber-50/95">
-                      Adoramos a tus pequeños, sin embargo, este evento está destinado solo para adultos. ¡Esperando tu comprensión!
-                    </p>
-                  </div>
-                  <p className="mt-4 text-center text-xs font-legan text-white/80">
+                  <p className="mt-2 text-center text-[0.7rem] font-legan leading-snug text-white/80 md:mt-4 md:text-xs">
                     Confirma antes del 31 de enero del 2026. Podrás modificar tu respuesta después si cambias de opinión.
                   </p>
 
@@ -955,8 +950,8 @@ const WeddingScreen = () => {
                       {guestError}
                     </p>
                   ) : guest && !isEditingRsvp ? (
-                    <div className="mt-8 rounded-2xl border border-white/20 bg-black/45 p-6 text-center backdrop-blur-sm">
-                      <p className="font-ovo text-lg">
+                    <div className="mt-4 rounded-2xl border border-white/20 bg-black/45 p-4 text-center backdrop-blur-sm md:mt-8 md:p-6">
+                      <p className="text-sm font-ovo md:text-lg">
                         {guest.confirmado
                           ? "¡Nos alegra mucho que nos acompañes en este día tan especial!"
                           : "Nos apena que no puedas acompañarnos este día, ¡te llevaremos en el corazón!"}
@@ -967,7 +962,7 @@ const WeddingScreen = () => {
                           setRsvpError("");
                           setIsEditingRsvp(true);
                         }}
-                        className="mt-5 rounded-full border border-white/70 px-5 py-2 text-sm transition hover:bg-white hover:text-black"
+                        className="mt-3 rounded-full border border-white/70 px-5 py-2 text-sm transition hover:bg-white hover:text-black md:mt-5"
                       >
                         Modificar mi respuesta
                       </button>
@@ -975,10 +970,10 @@ const WeddingScreen = () => {
                   ) : guest ? (
                     <form
                       onSubmit={saveRsvp}
-                      className="mt-7 space-y-5 rounded-2xl border border-white/20 bg-black/45 p-5 backdrop-blur-sm"
+                      className="mt-4 space-y-3 rounded-2xl border border-white/20 bg-black/45 p-4 backdrop-blur-sm md:mt-7 md:space-y-5 md:p-5"
                     >
                       <fieldset>
-                        <legend className="mb-3 w-full text-center font-ovo">
+                        <legend className="mb-2 w-full text-center text-sm font-ovo md:mb-3 md:text-base">
                           ¿Podrás acompañarnos?
                         </legend>
                         <div className="grid grid-cols-2 gap-3">
@@ -986,7 +981,7 @@ const WeddingScreen = () => {
                             type="button"
                             aria-pressed={attendance === true}
                             onClick={() => setAttendance(true)}
-                            className={`rounded-full border px-3 py-3 text-sm transition ${
+                            className={`rounded-full border px-3 py-2 text-xs transition md:px-3 md:py-3 md:text-sm ${
                               attendance === true
                                 ? "border-white bg-white text-black"
                                 : "border-white/50 text-white hover:bg-white/15"
@@ -998,7 +993,7 @@ const WeddingScreen = () => {
                             type="button"
                             aria-pressed={attendance === false}
                             onClick={() => setAttendance(false)}
-                            className={`rounded-full border px-3 py-3 text-sm transition ${
+                            className={`rounded-full border px-3 py-2 text-xs transition md:px-3 md:py-3 md:text-sm ${
                               attendance === false
                                 ? "border-white bg-white text-black"
                                 : "border-white/50 text-white hover:bg-white/15"
@@ -1009,26 +1004,26 @@ const WeddingScreen = () => {
                         </div>
                       </fieldset>
 
-                      <label className="block text-sm font-legan">
+                      <label className="block text-xs font-legan md:text-sm">
                         Mensaje de bendición para los novios
                         <textarea
                           value={blessingMessage}
                           onChange={(event) => setBlessingMessage(event.target.value)}
-                          rows={3}
+                          rows={2}
                           maxLength={1000}
-                          className="mt-2 w-full rounded-lg border border-white/30 bg-black/40 px-3 py-2 text-white outline-none placeholder:text-white/50 focus:border-white"
+                          className="mt-1 w-full rounded-lg border border-white/30 bg-black/40 px-3 py-1.5 text-sm text-white outline-none placeholder:text-white/50 focus:border-white md:mt-2 md:py-2"
                           placeholder="Escribe aquí tu mensaje..."
                         />
                       </label>
 
-                      <label className="block text-sm font-legan">
+                      <label className="block text-xs font-legan md:text-sm">
                         Preguntas de la boda (opcional)
                         <textarea
                           value={weddingQuestion}
                           onChange={(event) => setWeddingQuestion(event.target.value)}
-                          rows={2}
+                          rows={1}
                           maxLength={1000}
-                          className="mt-2 w-full rounded-lg border border-white/30 bg-black/40 px-3 py-2 text-white outline-none placeholder:text-white/50 focus:border-white"
+                          className="mt-1 w-full rounded-lg border border-white/30 bg-black/40 px-3 py-1.5 text-sm text-white outline-none placeholder:text-white/50 focus:border-white md:mt-2 md:py-2"
                           placeholder="¿Tienes alguna pregunta?"
                         />
                       </label>
@@ -1042,7 +1037,7 @@ const WeddingScreen = () => {
                       <button
                         type="submit"
                         disabled={isSavingRsvp}
-                        className="w-full rounded-full bg-white px-5 py-3 font-ovo text-sm text-black transition hover:bg-white/85 disabled:cursor-wait disabled:opacity-60"
+                        className="w-full rounded-full bg-white px-5 py-2.5 font-ovo text-sm text-black transition hover:bg-white/85 disabled:cursor-wait disabled:opacity-60 md:py-3"
                       >
                         {isSavingRsvp ? "Guardando..." : "Guardar mi respuesta"}
                       </button>
@@ -1052,6 +1047,32 @@ const WeddingScreen = () => {
               </div>
             )}
 
+            {config.rsvp.enabled && (
+              <section
+                className="snap-start min-h-[100svh] flex items-center justify-center px-6 py-12 text-white"
+                style={{
+                  backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 70%, transparent 100%), url(/slide_11.webp)`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              >
+                <div className="mx-auto w-full max-w-lg rounded-2xl border border-white/15 bg-black/40 px-6 py-10 text-center shadow-xl backdrop-blur-sm md:px-10 md:py-14">
+                  <p className="font-legan text-xs uppercase tracking-[0.3em] text-amber-200/90">
+                    Una nota especial
+                  </p>
+                  <div className="mx-auto my-5 h-px w-14 bg-amber-200/60" />
+                  <h2 className="font-ovo text-2xl uppercase tracking-wide md:text-3xl">
+                    Con cariño
+                  </h2>
+                  <p className="mt-5 text-sm font-legan leading-relaxed text-amber-50/95 md:text-base">
+                    Adoramos a tus pequeños, sin embargo, este evento está destinado solo para adultos. ¡Esperando tu comprensión!
+                  </p>
+                  <p className="mt-5 text-xs font-legan leading-relaxed text-white/75 md:text-sm">
+                    Gracias por comprender y ayudarnos a celebrar este día tan especial.
+                  </p>
+                </div>
+              </section>
+            )}
 
             {/* Timing Section */}
             <div
