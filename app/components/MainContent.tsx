@@ -653,7 +653,7 @@ const WeddingScreen = () => {
             <div
               className="snap-start  text-white h-screen flex flex-col items-center px-12 "
               style={{
-                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_5.jpeg)`,
+                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/foto_6.webp)`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -938,7 +938,7 @@ const WeddingScreen = () => {
                     {config.rsvp.detail}
                   </p>
                   <p className="mt-2 text-center text-[0.7rem] font-legan leading-snug text-white/80 md:mt-4 md:text-xs">
-                    Confirma antes del 31 de enero del 2026. Podrás modificar tu respuesta después si cambias de opinión.
+                    Confirma antes del 31 de enero del 2027. Podrás modificar tu respuesta después si cambias de opinión.
                   </p>
 
                   {guestLoading ? (
@@ -1094,20 +1094,20 @@ const WeddingScreen = () => {
                   </h2>
                 </div>
 
-                <div className="space-y-1 bg-white p-1 shadow-[0_18px_50px_rgba(50,40,30,0.12)]">
+                <div className="space-y-1 bg-white p-1 shadow-[0_18px_100px_rgba(50,40,30,0.12)]">
                   <button
                     type="button"
                     onClick={() =>
                       setSelectedGalleryPhoto({
-                        src: "/foto_1_samping.webp",
+                        src: "/foto_8.webp",
                         alt: "Retrato de los novios",
                       })
                     }
                     aria-label="Ampliar retrato de los novios"
-                    className="group relative block aspect-[2/1] w-full cursor-pointer overflow-hidden bg-[#e9e4dc]"
+                    className="group relative block aspect-[4/3] w-full cursor-pointer overflow-hidden bg-[#e9e4dc]"
                   >
                     <Image
-                      src="/foto_1_samping.webp"
+                      src="/foto_8.webp"
                       alt="Retrato de los novios"
                       fill
                       sizes="(max-width: 768px) 100vw, 800px"
@@ -1120,34 +1120,34 @@ const WeddingScreen = () => {
                       type="button"
                       onClick={() =>
                         setSelectedGalleryPhoto({
-                          src: "/foto_1.jpeg",
+                          src: "/foto_5.webp",
                           alt: "Un recuerdo especial de los novios",
                         })
                       }
                       aria-label="Ampliar foto de los novios"
-                      className="group relative col-span-2 block aspect-square cursor-pointer overflow-hidden bg-[#e9e4dc]"
+                      className="group relative col-span-3 block aspect-[3/4] cursor-pointer overflow-hidden bg-[#e9e4dc]"
                     >
                       <Image
-                        src="/foto_1.jpeg"
+                        src="/foto_5.webp"
                         alt="Un recuerdo especial de los novios"
                         fill
-                        sizes="(max-width: 768px) 40vw, 320px"
-                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                        sizes="(max-width: 808px) 40vw, 320px"
+                        className="object-cover  transition-transform duration-500 group-hover:scale-[1.03]"
                       />
                     </button>
                     <button
                       type="button"
                       onClick={() =>
                         setSelectedGalleryPhoto({
-                          src: "/foto_2.webp",
+                          src: "/foto_9.webp",
                           alt: "Una imagen de nuestra historia",
                         })
                       }
                       aria-label="Ampliar foto de nuestra historia"
-                      className="group relative col-span-3 block aspect-[3/4] cursor-pointer overflow-hidden bg-[#e9e4dc]"
+                      className="group relative col-span-2 block aspect-[3/4] cursor-pointer overflow-hidden bg-[#e9e4dc]"
                     >
                       <Image
-                        src="/foto_2.webp"
+                        src="/foto_9.webp"
                         alt="Una imagen de nuestra historia"
                         fill
                         sizes="(max-width: 768px) 60vw, 480px"
@@ -1171,7 +1171,7 @@ const WeddingScreen = () => {
                       type="button"
                       onClick={() =>
                         setSelectedGalleryPhoto({
-                          src: "/foto_3.jpg",
+                          src: "/foto_6.webp",
                           alt: "Un momento para recordar",
                         })
                       }
@@ -1179,7 +1179,7 @@ const WeddingScreen = () => {
                       className="group relative col-span-3 block aspect-[4/3] cursor-pointer overflow-hidden bg-[#e9e4dc]"
                     >
                       <Image
-                        src="/foto_3.jpg"
+                        src="/foto_6.webp"
                         alt="Un momento para recordar"
                         fill
                         sizes="(max-width: 768px) 60vw, 480px"
@@ -1190,7 +1190,7 @@ const WeddingScreen = () => {
                       type="button"
                       onClick={() =>
                         setSelectedGalleryPhoto({
-                          src: "/foto_4.jpeg",
+                          src: "/slide_5.webp",
                           alt: "Un recuerdo de nuestra historia",
                         })
                       }
@@ -1198,7 +1198,7 @@ const WeddingScreen = () => {
                       className="group relative col-span-2 block aspect-[2/3] cursor-pointer overflow-hidden bg-[#e9e4dc]"
                     >
                       <Image
-                        src="/foto_4.jpeg"
+                        src="/slide_5.webp"
                         alt="Un recuerdo de nuestra historia"
                         fill
                         sizes="(max-width: 768px) 40vw, 320px"
