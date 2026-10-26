@@ -73,10 +73,10 @@ body {
   background-image: url(../public/foto_s_5.webp);
  }
  35% {
-  background-image: url(../public/foto_1.jpeg);
+  background-image: url(../public/portada_3.webp);
  }
   75% {
-    background-image: url(../public/foto_s_5.webp);
+    background-image: url(../public/portada_2.webp);
   }
   100% {
     background-image: url(../public/foto_s_6.webp);

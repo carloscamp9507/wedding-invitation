@@ -347,12 +347,12 @@ const WeddingScreen = () => {
       <div
         className="relative overflow-hidden md:flex justify-center hidden items-end pb-12 w-2/3 h-1/2 md:h-full"
         style={{
-          backgroundImage: `url(/foto_1_samping.webp)`, //refer to base 1st photo
+          backgroundImage: `url(/portada_3.webp)`, //refer to base 1st photo
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <div className="absolute bottom-0 left-0 w-full h-1/5 pointer-events-none">
+        <div className="absolute bottom-0 left-0 w-full h-1/6 pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-transparent backdrop-blur-sm transition-opacity duration-500 ease-out" />
           <div className="absolute -top-6 left-0 w-full h-12 bg-gradient-to-t from-black/40 to-transparent blur-2xl opacity-80" />
         </div>
@@ -436,7 +436,7 @@ const WeddingScreen = () => {
             <div
               className="text-white h-screen flex items-end md:items-center pt-12 p-5 px-12 snap-start relative overflow-hidden"
               style={{
-                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_1.jpeg)`,
+                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/versiculo.webp)`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -603,7 +603,7 @@ const WeddingScreen = () => {
             <div
               className="snap-start text-white h-screen flex flex-col justify-center px-6 py-16"
               style={{
-                backgroundImage: `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80')`,
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.7)), url('foto_9.webp')`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -719,7 +719,7 @@ const WeddingScreen = () => {
             <div
               className="snap-start  text-white h-screen flex flex-col items-center justify-start pt-16 px-12 "
               style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_6.jpeg)`,
+                backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/portada_3.webp)`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -1135,7 +1135,8 @@ const WeddingScreen = () => {
                         className="object-cover  transition-transform duration-500 group-hover:scale-[1.03]"
                       />
                     </button>
-                    <button
+                    <div className="col-span-2 grid grid-cols-2 gap-1">
+                      <button
                       type="button"
                       onClick={() =>
                         setSelectedGalleryPhoto({
@@ -1154,6 +1155,27 @@ const WeddingScreen = () => {
                         className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                       />
                     </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setSelectedGalleryPhoto({
+                          src: "/portada_3.webp",
+                          alt: "Una imagen de nuestra historia",
+                        })
+                      }
+                      aria-label="Ampliar foto de nuestra historia"
+                      className="group relative col-span-2 block aspect-[4/3] cursor-pointer overflow-hidden bg-[#e9e4dc]"
+                    >
+                      <Image
+                        src="/portada_3.webp"
+                        alt="Una imagen de nuestra historia"
+                        fill
+                        sizes="(max-width: 700px) 60vw, 480px"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                      />
+                    </button>
+                      </div>
+                    
                   </div>
 
                   <div className="flex items-center justify-center gap-5 py-5 text-center font-ovo text-sm tracking-[0.35em] text-[#746958]">
@@ -1245,7 +1267,7 @@ const WeddingScreen = () => {
             <div
               className="snap-start text-white h-screen flex flex-col justify-end pt-16 pb-16 px-12 "
               style={{
-                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_7.jpeg)`,
+                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/slide_5.webp)`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}

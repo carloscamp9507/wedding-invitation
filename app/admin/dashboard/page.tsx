@@ -6,7 +6,7 @@ import { getSupabaseClient, type Database } from "@/lib/supabase";
 
 type Guest = Database["public"]["Tables"]["invitados"]["Row"];
 
-const ALLOWED_ADMIN_EMAILS = ["carlos.ingsold17@gmail.com"];
+const ALLOWED_ADMIN_EMAILS = ["carlos.ingsold17@gmail.com","isaacalle10@gmail.com", "alissett7@gmail.com"];
 
 const formatDate = (value: string | null) => {
   if (!value || Number.isNaN(Date.parse(value))) {
