@@ -39,7 +39,7 @@ body {
   position: relative;
   background-size: cover;
   background-position: center;
-  background-image: url(../public/foto_5.webp);
+  background-image: url(/public/foto_5.webp);
   background-repeat: no-repeat;
   transition: 5s;
   animation-name: animate;
@@ -70,16 +70,16 @@ body {
 
 @keyframes animate {
  0% {
-  background-image: url(../public/foto_5.webp);
+  background-image: url(/public/foto_5.webp);
  }
  35% {
-  background-image: url(../public/foto_1.jpeg);
+  background-image: url(/public/foto_1.jpeg);
  }
   75% {
-    background-image: url(../public/foto_5.webp);
+    background-image: url(/public/foto_5.webp);
   }
   100% {
-    background-image: url(../public/foto_6.webp);
+    background-image: url(/public/foto_6.webp);
   }
 }
 
