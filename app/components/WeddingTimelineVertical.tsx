@@ -25,7 +25,7 @@ export default function WeddingTimelineVertical() {
     {
       time: "14:30",
       title: "Almuerzo",
-      description: "Disfrutaremos de una deliciosa cena juntos.",
+      description: "Disfrutaremos de un delicioso almuerzo juntos.",
       icon: "",
     },
     {
