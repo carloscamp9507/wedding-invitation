@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { getSupabaseClient, type Database } from "@/lib/supabase";
 
@@ -36,10 +36,22 @@ export default function AdminDashboardPage() {
   const [guests, setGuests] = useState<Guest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [actionError, setActionError] = useState("");
+  const [actionMessage, setActionMessage] = useState("");
+  const [siteOrigin, setSiteOrigin] = useState("");
+  const [formMode, setFormMode] = useState<"create" | "edit" | null>(null);
+  const [guestBeingEdited, setGuestBeingEdited] = useState<Guest | null>(null);
+  const [guestName, setGuestName] = useState("");
+  const [guestPasses, setGuestPasses] = useState("1");
+  const [guestAdults, setGuestAdults] = useState("1");
+  const [guestChildren, setGuestChildren] = useState("0");
+  const [isSavingGuest, setIsSavingGuest] = useState(false);
+  const [copiedToken, setCopiedToken] = useState("");
 
   useEffect(() => {
     let isMounted = true;
     const supabase = getSupabaseClient();
+    setSiteOrigin(window.location.origin);
 
     const loadDashboard = async () => {
       try {
@@ -109,6 +121,144 @@ export default function AdminDashboardPage() {
     router.replace("/admin/login");
   };
 
+  const startCreatingGuest = () => {
+    setFormMode("create");
+    setGuestBeingEdited(null);
+    setGuestName("");
+    setGuestPasses("1");
+    setGuestAdults("1");
+    setGuestChildren("0");
+    setActionError("");
+    setActionMessage("");
+  };
+
+  const startEditingGuest = (guest: Guest) => {
+    setFormMode("edit");
+    setGuestBeingEdited(guest);
+    setGuestName(guest.nombre);
+    setGuestPasses(String(guest.pases));
+    setActionError("");
+    setActionMessage("");
+  };
+
+  const saveGuest = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const nombre = guestName.trim();
+    const pases = Number(guestPasses);
+    const adultos = Number(guestAdults);
+    const ninos = Number(guestChildren);
+
+    if (!nombre || !Number.isInteger(pases) || pases < 1) {
+      setActionError("Escribe un nombre y asigna al menos un pase.");
+      return;
+    }
+
+    if (
+      formMode === "create" &&
+      (!Number.isInteger(adultos) ||
+        adultos < 0 ||
+        !Number.isInteger(ninos) ||
+        ninos < 0 ||
+        adultos + ninos !== pases)
+    ) {
+      setActionError(
+        "El número de adultos más el número de niños debe ser igual al total de pases."
+      );
+      return;
+    }
+
+    if (!siteOrigin) {
+      setActionError("No se pudo determinar el dominio actual. Recarga el panel e inténtalo nuevamente.");
+      return;
+    }
+
+    setIsSavingGuest(true);
+    setActionError("");
+    setActionMessage("");
+
+    try {
+      const supabase = getSupabaseClient();
+      let savedGuest: Guest;
+
+      if (formMode === "create") {
+        const token = crypto.randomUUID();
+        const link = `${siteOrigin}/?token=${encodeURIComponent(token)}`;
+        const { data, error } = await supabase
+          .from("invitados")
+          .insert({ token, nombre, pases, adultos, ninos, link })
+          .select("*")
+          .single();
+
+        if (error) {
+          throw error;
+        }
+
+        savedGuest = data;
+      } else {
+        if (!guestBeingEdited) {
+          throw new Error("No se encontró el registro que deseas editar.");
+        }
+
+        const link = `${siteOrigin}/?token=${encodeURIComponent(guestBeingEdited.token)}`;
+        const { data, error } = await supabase
+          .from("invitados")
+          .update({
+            nombre,
+            pases,
+            link,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("token", guestBeingEdited.token)
+          .select("*")
+          .single();
+
+        if (error) {
+          throw error;
+        }
+
+        savedGuest = data;
+      }
+
+      setGuests((currentGuests) =>
+        [...currentGuests.filter((guest) => guest.token !== savedGuest.token), savedGuest]
+          .sort((first, second) => first.nombre.localeCompare(second.nombre, "es"))
+      );
+      setFormMode(null);
+      setGuestBeingEdited(null);
+      setActionMessage(
+        formMode === "create"
+          ? "La invitación se creó correctamente."
+          : "La invitación se actualizó correctamente."
+      );
+    } catch (error) {
+      setActionError(
+        error instanceof Error
+          ? error.message
+          : "No se pudo guardar la invitación."
+      );
+    } finally {
+      setIsSavingGuest(false);
+    }
+  };
+
+  const copyInvitationUrl = async (token: string) => {
+    const url = `${siteOrigin}/?token=${encodeURIComponent(token)}`;
+
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopiedToken(token);
+      setActionError("");
+      setActionMessage("Enlace copiado al portapapeles.");
+    } catch (error) {
+      setActionError(
+        error instanceof Error
+          ? `No se pudo copiar el enlace: ${error.message}`
+          : "No se pudo copiar el enlace."
+      );
+      setActionMessage("");
+    }
+  };
+
   const confirmedGuests = guests.filter((guest) => guest.confirmado === true);
   const confirmedAdults = confirmedGuests.reduce(
     (total, guest) => total + (guest.adultos ?? 0),
@@ -175,13 +325,126 @@ export default function AdminDashboardPage() {
               ))}
             </section>
 
+            <section className="mt-8 rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h2 className="font-ovo text-xl">Invitaciones</h2>
+                  <p className="mt-1 text-sm text-white/60">
+                    Administra los datos y comparte los enlaces personalizados.
+                  </p>
+                </div>
+                {formMode === null && (
+                  <button
+                    type="button"
+                    onClick={startCreatingGuest}
+                    className="w-fit rounded-full bg-amber-100 px-5 py-2 text-sm font-medium text-slate-900 transition hover:bg-white"
+                  >
+                    Crear invitación
+                  </button>
+                )}
+              </div>
+
+              {formMode !== null && (
+                <form
+                  onSubmit={saveGuest}
+                  className="mt-5 grid gap-4 border-t border-white/10 pt-5 sm:grid-cols-2 sm:items-end lg:grid-cols-3 2xl:grid-cols-6"
+                >
+                  <label className="block text-sm text-white/75">
+                    Nombre
+                    <input
+                      autoFocus
+                      required
+                      value={guestName}
+                      onChange={(event) => setGuestName(event.target.value)}
+                      className="mt-2 w-full rounded-lg border border-white/20 bg-black/30 px-3 py-2 text-white outline-none focus:border-amber-200"
+                    />
+                  </label>
+                  <label className="block text-sm text-white/75">
+                    Pases asignados
+                    <input
+                      required
+                      type="number"
+                      min="1"
+                      step="1"
+                      value={guestPasses}
+                      onChange={(event) => setGuestPasses(event.target.value)}
+                      className="mt-2 w-full rounded-lg border border-white/20 bg-black/30 px-3 py-2 text-white outline-none focus:border-amber-200"
+                    />
+                  </label>
+                  {formMode === "create" && (
+                    <>
+                      <label className="block text-sm text-white/75">
+                        Número de adultos
+                        <input
+                          required
+                          type="number"
+                          min="0"
+                          step="1"
+                          value={guestAdults}
+                          onChange={(event) => setGuestAdults(event.target.value)}
+                          className="mt-2 w-full rounded-lg border border-white/20 bg-black/30 px-3 py-2 text-white outline-none focus:border-amber-200"
+                        />
+                      </label>
+                      <label className="block text-sm text-white/75">
+                        Número de niños
+                        <input
+                          required
+                          type="number"
+                          min="0"
+                          step="1"
+                          value={guestChildren}
+                          onChange={(event) => setGuestChildren(event.target.value)}
+                          className="mt-2 w-full rounded-lg border border-white/20 bg-black/30 px-3 py-2 text-white outline-none focus:border-amber-200"
+                        />
+                      </label>
+                    </>
+                  )}
+                  <button
+                    type="submit"
+                    disabled={isSavingGuest || !siteOrigin}
+                    className="rounded-full bg-amber-100 px-5 py-2 text-sm font-medium text-slate-900 transition hover:bg-white disabled:cursor-wait disabled:opacity-60"
+                  >
+                    {isSavingGuest ? "Guardando..." : "Guardar"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormMode(null);
+                      setGuestBeingEdited(null);
+                      setActionError("");
+                    }}
+                    disabled={isSavingGuest}
+                    className="rounded-full border border-white/25 px-5 py-2 text-sm transition hover:border-white disabled:opacity-60"
+                  >
+                    Cancelar
+                  </button>
+                  {actionError && (
+                    <p role="alert" className="text-sm text-red-200 sm:col-span-full">
+                      {actionError}
+                    </p>
+                  )}
+                </form>
+              )}
+              {actionMessage && (
+                <p role="status" className="mt-4 text-sm text-emerald-200">
+                  {actionMessage}
+                </p>
+              )}
+              {!formMode && actionError && (
+                <p role="alert" className="mt-4 text-sm text-red-200">
+                  {actionError}
+                </p>
+              )}
+            </section>
+
             <section className="mt-8 overflow-hidden rounded-2xl border border-white/10">
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[1250px] border-collapse text-left text-sm">
+                <table className="w-full min-w-[1550px] border-collapse text-left text-sm">
                   <thead className="bg-white/[0.08] text-xs uppercase tracking-wide text-white/70">
                     <tr>
                       <th scope="col" className="px-4 py-4">Nombre</th>
                       <th scope="col" className="px-4 py-4">Pases asignados</th>
+                      <th scope="col" className="px-4 py-4">Enlace de invitación</th>
                       <th scope="col" className="px-4 py-4">Adultos</th>
                       <th scope="col" className="px-4 py-4">Niños</th>
                       <th scope="col" className="px-4 py-4">Confirmación</th>
@@ -189,6 +452,7 @@ export default function AdminDashboardPage() {
                       <th scope="col" className="px-4 py-4">Mensaje de bendición</th>
                       <th scope="col" className="px-4 py-4">Pregunta opcional</th>
                       <th scope="col" className="px-4 py-4">Última actualización</th>
+                      <th scope="col" className="px-4 py-4">Acciones</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/10">
@@ -196,6 +460,24 @@ export default function AdminDashboardPage() {
                       <tr key={guest.token} className="align-top hover:bg-white/[0.03]">
                         <td className="px-4 py-4 font-medium">{guest.nombre}</td>
                         <td className="px-4 py-4">{guest.pases}</td>
+                        <td className="px-4 py-4">
+                          <div
+                            className="max-w-[360px] truncate text-white/75"
+                            title={`${siteOrigin}/?token=${encodeURIComponent(guest.token)}`}
+                          >
+                            {siteOrigin
+                              ? `${siteOrigin}/?token=${encodeURIComponent(guest.token)}`
+                              : guest.link}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => void copyInvitationUrl(guest.token)}
+                            disabled={!siteOrigin}
+                            className="mt-2 rounded-full border border-white/25 px-3 py-1 text-xs transition hover:border-amber-200 hover:text-amber-100 disabled:opacity-50"
+                          >
+                            {copiedToken === guest.token ? "Copiado" : "Copiar enlace"}
+                          </button>
+                        </td>
                         <td className="px-4 py-4">{guest.adultos ?? "—"}</td>
                         <td className="px-4 py-4">{guest.ninos ?? "—"}</td>
                         <td className="px-4 py-4">
@@ -223,11 +505,20 @@ export default function AdminDashboardPage() {
                         <td className="whitespace-nowrap px-4 py-4 text-white/70">
                           {formatDate(guest.updated_at)}
                         </td>
+                        <td className="px-4 py-4">
+                          <button
+                            type="button"
+                            onClick={() => startEditingGuest(guest)}
+                            className="rounded-full border border-white/25 px-3 py-1 text-xs transition hover:border-amber-200 hover:text-amber-100"
+                          >
+                            Editar
+                          </button>
+                        </td>
                       </tr>
                     ))}
                     {guests.length === 0 && (
                       <tr>
-                        <td colSpan={9} className="px-4 py-12 text-center text-white/60">
+                        <td colSpan={11} className="px-4 py-12 text-center text-white/60">
                           Aún no hay invitados registrados.
                         </td>
                       </tr>
