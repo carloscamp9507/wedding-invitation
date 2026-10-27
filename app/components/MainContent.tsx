@@ -908,7 +908,7 @@ const WeddingScreen = () => {
                   {/* Banco 2 (Opcional) */}
                   <div>
                     <p className="font-ovo text-lg font-semibold text-amber-200">Banco Guayaquil</p>
-                    <p className="text-sm font-legan text-white/80 mt-1">Cuenta de Ahorros: <span className="font-mono font-bold text-white">0987654321</span></p>
+                    <p className="text-sm font-legan text-white/80 mt-1">Cuenta de Ahorros: <span className="font-mono font-bold text-white">0026143157</span></p>
                     <p className="text-sm font-legan text-white/80">Titular: Erick Isaac Calle Herrera</p>
                     <p className="text-xs font-legan text-white/60 mt-1">CI: 1751578731</p>
                   </div>
