@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, type FormEvent } from "react";
 import { IoIosArrowUp, IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { FaInstagram } from "react-icons/fa";
+import { FaInstagram, FaVolumeMute, FaVolumeUp } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
 import confetti from "canvas-confetti";
@@ -49,7 +49,8 @@ const WeddingScreen = () => {
     src: string;
     alt: string;
   } | null>(null);
-  const audioRef = useRef(null);
+  const [isMuted, setIsMuted] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -262,6 +263,14 @@ const WeddingScreen = () => {
     }
   };
 
+  const toggleMute = () => {
+    if (!audioRef.current) return;
+
+    const nextMutedState = !audioRef.current.muted;
+    audioRef.current.muted = nextMutedState;
+    setIsMuted(nextMutedState);
+  };
+
 
   const { ref: mainRef, inView: isMainInView } = useInView({
     threshold: 0.5,
@@ -443,7 +452,7 @@ const WeddingScreen = () => {
             >
               <div
                 ref={slide1Ref}
-                className={`relative z-10 ${isSlide1InView ? "active" : ""} fadeInMove pb-10 md:pb-0 w-full md:max-w-3xl`}
+                className={`relative z-10 ${isSlide1InView ? "active" : ""} fadeInMove pb-20 md:pb-0 w-full md:max-w-3xl`}
               >
                 <h1 className="text-xl md:text-2xl font-ovo tracking-wide text-white uppercase">
                   {config.bibleVerse}
@@ -590,10 +599,7 @@ const WeddingScreen = () => {
                   className={`relative flex items-center mt-5 fadeInLeft ${isSlide4InView ? " active" : ""
                     }`}
                 >
-                  <hr className="w-[120px] mx-2 border-t border-gray-300" />
-                  <span className="px-2 font-thesignature text-3xl">
-                    {config.coupleNames}
-                  </span>
+                 
                 </div>
               </div>
             </div>
@@ -1315,6 +1321,17 @@ const WeddingScreen = () => {
       </div>
       {/* Audio Element */}
       <audio ref={audioRef} src="/music/wedding_song.mp3" preload="auto" />
+      {isOpen && (
+        <button
+          type="button"
+          onClick={toggleMute}
+          aria-label={isMuted ? "Activar sonido" : "Silenciar sonido"}
+          title={isMuted ? "Activar sonido" : "Silenciar sonido"}
+          className="fixed bottom-5 right-4 z-[60] flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-black/10 text-white/45 shadow-sm backdrop-blur-sm transition hover:bg-black/20 hover:text-white/80 focus:outline-none focus-visible:ring-1 focus-visible:ring-white/60 sm:bottom-7 sm:right-5"
+        >
+          {isMuted ? <FaVolumeMute aria-hidden="true" className="h-4 w-4" /> : <FaVolumeUp aria-hidden="true" className="h-4 w-4" />}
+        </button>
+      )}
     </div>
   );
 };
