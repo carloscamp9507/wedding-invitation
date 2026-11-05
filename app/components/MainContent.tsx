@@ -651,7 +651,7 @@ const WeddingScreen = () => {
 
             {/* Slide 5 */}
             <div
-              className="snap-start  text-white h-screen flex flex-col items-center px-12 "
+              className="relative snap-start h-screen text-white flex flex-col items-center px-12 "
               style={{
                 backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%), url(/foto_6.webp)`,
                 backgroundSize: "cover",
@@ -663,7 +663,7 @@ const WeddingScreen = () => {
                 className={` ${isSlide5InView ? "active" : ""
                   }  fadeInMove flex items-center flex-col pt-32 `}
               >
-                <h3 className="uppercase font-legan text-xs tracking-wide mt-5 mb-2">
+                <h3 className="uppercase font-legan text-xs tracking-wide mt-2 mb-2">
                   save our date
                 </h3>
                 <h1 className="text-2xl w-[200px] text-center text-white  font-ovo uppercase">
@@ -675,24 +675,6 @@ const WeddingScreen = () => {
                     day: "numeric",
                   })}
                 </h1>
-                {config.holyMatrimony.enabled && (
-                  <div className="mt-5 mx-auto flex flex-col items-center">
-                    <h3 className="uppercase font-ovo text-sm text-center mt-5 mb-2">
-                      Matrimonio <br /> {config.holyMatrimony.time}
-                    </h3>
-                    <p className="text-sm text-center  font-legan text-white">
-                      {config.holyMatrimony.place} <br /> {config.holyMatrimony.place_details}
-                    </p>
-                    <Link
-                      href={config.holyMatrimony.googleMapsLink}
-                      target="_blank"
-                      className="cursor-pointer hover:text-white/20 text-sm rounded-full flex items-center gap-x-2 text-center font-legan mt-5 bg-[#808080] w-fit px-4 py-2 text-white"
-                    >
-                      Google Maps
-                    </Link>
-                  </div>
-                )}
-
                 {config.weddingReception.enabled && (
                   <div className="mt-5 mx-auto flex  flex-col items-center">
                     <h3 className="uppercase font-ovo text-sm text-center mt-5 mb-2">
@@ -711,6 +693,23 @@ const WeddingScreen = () => {
                   </div>
                 )}
               </div>
+              {config.holyMatrimony.enabled && (
+                <div className="absolute bottom-20 left-1/2 mx-auto flex w-[calc(100%-3rem)] -translate-x-1/2 flex-col items-center">
+                  <h3 className="mb-2 text-center font-ovo text-sm uppercase">
+                    Matrimonio <br /> {config.holyMatrimony.time}
+                  </h3>
+                  <p className="text-center font-legan text-sm text-white">
+                    {config.holyMatrimony.place} <br /> {config.holyMatrimony.place_details}
+                  </p>
+                  <Link
+                    href={config.holyMatrimony.googleMapsLink}
+                    target="_blank"
+                    className="mt-3 flex w-fit cursor-pointer items-center gap-x-2 rounded-full bg-[#808080] px-4 py-2 text-center font-legan text-sm text-white hover:text-white/20"
+                  >
+                    Google Maps
+                  </Link>
+                </div>
+              )}
             </div>
 
 
@@ -1227,6 +1226,19 @@ const WeddingScreen = () => {
                         className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                       />
                     </button>
+                  </div>
+
+                  <div className="flex items-center justify-center bg-white px-4 py-4 font-legan text-xs text-[#746958]">
+                    <a
+                      href="https://www.instagram.com/pamela.calle22"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 transition-colors hover:text-[#302d29]"
+                      aria-label="Ver el Instagram de Pamela Calle"
+                    >
+                      <FaInstagram aria-hidden="true" />
+                      <span>Fotografía por Pamela Calle</span>
+                    </a>
                   </div>
                 </div>
               </div>
